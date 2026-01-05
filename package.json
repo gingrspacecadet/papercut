@@ -2,6 +2,7 @@
     "name": "papercut",
     "version": "0.1.0",
     "description": "A desktop utility for installing Kindle jailbreaks, hotfixes, and other mods.",
+    "license": "CC-BY-NC-SA-4.0",
     "homepage": "https://github.com/gingrspacecadet/papercut",
     "contributors": [
         {
@@ -14,15 +15,16 @@
             "email": "jackrawlings2011@gmail.com"
         }
     ],
-
     "private": true,
-    "main": "main.js",
     "scripts": {
-        "dev": "npx electron .",
-        "dist": "electron-builder"
+        "dev": "neu run",
+        "build-mac": "npm i && neu update && brew install jq || sudo apt-get install jq && sh ./build-mac.sh",
+        "build-linux": "npm i && neu update && brew install jq || sudo apt-get install jq && sh ./build-linux.sh",
+        "build-win": "npm i && neu update && brew install jq || sudo apt-get install jq && sh ./build-win.sh",
+        "update": "neu update",
+        "setup": "npm i && neu update"
     },
     "devDependencies": {
-        "electron": "^28.0.0",
-        "electron-builder": "^26.0.12"
+        "@neutralinojs/neu": "^11.6.0"
     }
 }
