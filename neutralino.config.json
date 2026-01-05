@@ -48,15 +48,14 @@
   "buildScript": {
     "mac": {
       "architecture": [
-        "x64",
-        "arm64",
-        "universal"
+        "x64"
       ],
       "minimumOS": "10.13.0",
       "appName": "PaperCut",
       "appBundleName": "papercut",
       "appIdentifier": "org.papercut.installer",
-      "appIcon": "assets/icon-mac/app-iOS-Default-1024x1024@1x_512x512_512x512.icns"
+      "appIcon": "assets/icon-mac/icon.icns",
+      "appCredits": "© 2026 TheHuckle, gingrspacecadet. All rights reserved."
     },
     "win": {
       "architecture": [

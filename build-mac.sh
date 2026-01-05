@@ -41,6 +41,7 @@ APP_NAME=$(jq -r '.buildScript.mac.appName' ${CONF})
 APP_ID=$(jq -r '.buildScript.mac.appIdentifier' ${CONF})
 APP_BUNDLE=$(jq -r '.buildScript.mac.appBundleName' ${CONF})
 APP_ICON=$(jq -r '.buildScript.mac.appIcon' ${CONF})
+APP_CREDITS=$(jq -r '.buildScript.mac.appCredits' ${CONF})
 
 APP_SRC=./_app_scaffolds/mac/myapp.app
 
@@ -85,6 +86,7 @@ for APP_ARCH in "${APP_ARCH_LIST[@]}"; do
     echo "  Bundle Name:   ${APP_BUNDLE}"
     echo "  Identifier:    ${APP_ID}"
     echo "  Icon:          ${APP_ICON}"
+    echo "  Credits:       ${APP_CREDITS}"
     echo "  Source Folder: ${APP_SRC}"
     echo "  Target Folder: ${APP_DST}"
     echo
@@ -128,12 +130,14 @@ for APP_ARCH in "${APP_ARCH_LIST[@]}"; do
       sed -i '' "s/{APP_ID}/${APP_ID}/g" "${APP_DST}/Contents/Info.plist"
       sed -i '' "s/{APP_VERSION}/${APP_VERSION}/g" "${APP_DST}/Contents/Info.plist"
       sed -i '' "s/{APP_MIN_OS}/${APP_MIN_OS}/g" "${APP_DST}/Contents/Info.plist"
+      sed -i '' "s/{APP_CREDITS}/${APP_CREDITS}/g" "${APP_DST}/Contents/Info.plist"
     else
       sed -i "s/{APP_NAME}/${APP_NAME}/g" "${APP_DST}/Contents/Info.plist"
       sed -i "s/{APP_BUNDLE}/${APP_BUNDLE}/g" "${APP_DST}/Contents/Info.plist"
       sed -i "s/{APP_ID}/${APP_ID}/g" "${APP_DST}/Contents/Info.plist"
       sed -i "s/{APP_VERSION}/${APP_VERSION}/g" "${APP_DST}/Contents/Info.plist"
       sed -i "s/{APP_MIN_OS}/${APP_MIN_OS}/g" "${APP_DST}/Contents/Info.plist"
+      sed -i "s/{APP_CREDITS}/${APP_CREDITS}/g" "${APP_DST}/Contents/Info.plist"
     fi
 
     if [ -e "./postproc-mac.sh" ]; then

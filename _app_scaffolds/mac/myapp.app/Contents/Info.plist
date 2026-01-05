@@ -17,7 +17,7 @@
         <key>CFBundleShortVersionString</key>
         <string>{APP_VERSION}</string> 
         <key>CFBundleGetInfoString</key>
-        <string>{APP_NAME} {APP_VERSION}</string>
+        <string>{APP_CREDITS}</string>
         <key>CFBundlePackageType</key>
         <string>APPL</string>
         <key>LSMinimumSystemVersion</key>
