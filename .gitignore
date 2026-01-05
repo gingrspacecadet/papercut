@@ -5,3 +5,4 @@ neutralinojs.log
 .tmp
 bin
 build-scripts
+.DS_Store
