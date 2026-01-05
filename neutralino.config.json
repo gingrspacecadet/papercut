@@ -1,80 +1,91 @@
 {
-  "$schema": "https://raw.githubusercontent.com/neutralinojs/neutralinojs/main/schemas/neutralino.config.schema.json",
-  "applicationId": "org.papercut.installer",
-  "applicationName": "PaperCut",
-  "applicationIcon": "assets/icon/app-iOS-Default-512x512@1x.png",
-  "version": "0.1.0",
-  "author": "TheHuckle, gingrspacecadet",
-  "description": "An installer for Kindle jailbreaks, hotfixes, and other mods.",
-  "copyright": "© 2026 TheHuckle, gingrspacecadet. All rights reserved.",
-  "defaultMode": "window",
-  "port": 0,
-  "documentRoot": "/renderer/",
-  "url": "/",
-  "enableServer": true,
-  "enableNativeAPI": true,
-  "permissions": [
-    "filesystem",
-    "os",
-    "window"
-  ],
-  "modes": {
-    "window": {
-      "title": "PaperCut",
-      "icon": "/renderer/assets/Icon.png",
-      "width": 800,
-      "height": 600,
-      "minWidth": 800,
-      "minHeight": 600,
-      "center": true,
-      "fullScreen": false,
-      "alwaysOnTop": false,
-      "enableInspector": false,
-      "borderless": false,
-      "maximize": false,
-      "hidden": false,
-      "resizable": true,
-      "exitProcessOnClose": true
-    }
-  },
-  "cli": {
-    "binaryName": "PaperCut",
-    "binaryVersion": "6.4.0",
-    "resourcesPath": "/renderer/",
-    "extensionsPath": "/extensions/",
-    "clientLibrary": "/renderer/vendor/neutralino/neutralino.mjs",
-    "clientVersion": "6.4.0"
-  },
-  "buildScript": {
-    "mac": {
-      "architecture": [
-        "x64"
-      ],
-      "minimumOS": "10.13.0",
-      "appName": "PaperCut",
-      "appBundleName": "papercut",
-      "appIdentifier": "org.papercut.installer",
-      "appIcon": "assets/icon-mac/icon.icns",
-      "appCredits": "© 2026 TheHuckle, gingrspacecadet. All rights reserved."
+    "$schema": "https://raw.githubusercontent.com/neutralinojs/neutralinojs/main/schemas/neutralino.config.schema.json",
+    
+    "applicationId": "org.papercut.installer",
+    "applicationName": "PaperCut",
+    "applicationIcon": "assets/icon/app-iOS-Default-512x512@1x.png",
+    "version": "0.1.0",
+    "author": "TheHuckle, gingrspacecadet",
+    "description": "An installer for Kindle jailbreaks, hotfixes, and other mods.",
+    "copyright": "© 2026 TheHuckle, gingrspacecadet. All rights reserved.",
+
+    "defaultMode": "window",
+    "port": 3000,
+    "documentRoot": "/renderer/",
+    "url": "/",
+
+    "enableServer": true,
+    "enableNativeAPI": true,
+    "tokenSecurity": "one-time",
+    "logging": {
+        "enabled": true,
+        "writeToLogFile": true
     },
-    "win": {
-      "architecture": [
-        "x64"
-      ],
-      "appName": "PaperCut",
-      "appIcon": "assets/icon/app-iOS-Default-512x512@1x.png"
+    "permissions": [
+        "filesystem",
+        "os",
+        "window"
+    ],
+
+    "modes": {
+        "window": {
+            "title": "PaperCut",
+            "icon": "/renderer/assets/Icon.png",
+            "width": 800,
+            "height": 600,
+            "minWidth": 800,
+            "minHeight": 600,
+            "center": true,
+            "fullScreen": false,
+            "alwaysOnTop": false,
+            "enableInspector": true,
+            "borderless": false,
+            "maximize": false,
+            "hidden": false,
+            "resizable": true,
+            "exitProcessOnClose": true,
+            "injectGlobals": true
+        }
     },
-    "linux": {
-      "architecture": [
-        "x64",
-        "arm64",
-        "armhf"
-      ],
-      "appName": "PaperCut",
-      "appIcon": "assets/icon/app-iOS-Default-512x512@1x.png",
-      "appPath": "/usr/share/papercut",
-      "appIconPath": "/usr/share/papercut/icon.png",
-      "appIconLocation": "/usr/share/papercut/icon.png"
+
+    "cli": {
+        "binaryName": "PaperCut",
+        "binaryVersion": "6.4.0",
+        "resourcesPath": "/renderer/",
+        "extensionsPath": "/extensions/",
+        "clientLibrary": "/renderer/vendor/neutralino/neutralino.mjs",
+        "clientVersion": "6.4.0"
+    },
+    "buildScript": {
+        "mac": {
+            "architecture": [
+                "x64"
+            ],
+            "minimumOS": "10.13.0",
+            "appName": "PaperCut",
+            "appBundleName": "papercut",
+            "appIdentifier": "org.papercut.installer",
+            "appIcon": "assets/icon-mac/icon.icns",
+            "appCredits": "© 2026 TheHuckle, gingrspacecadet. All rights reserved."
+        },
+        "win": {
+            "architecture": [
+                "x64"
+            ],
+            "appName": "PaperCut",
+            "appIcon": "assets/icon/app-iOS-Default-512x512@1x.png"
+        },
+        "linux": {
+            "architecture": [
+                "x64",
+                "arm64",
+                "armhf"
+            ],
+            "appName": "PaperCut",
+            "appIcon": "assets/icon/app-iOS-Default-512x512@1x.png",
+            "appPath": "/usr/share/papercut",
+            "appIconPath": "/usr/share/papercut/icon.png",
+            "appIconLocation": "/usr/share/papercut/icon.png"
+        }
     }
-  }
 }
