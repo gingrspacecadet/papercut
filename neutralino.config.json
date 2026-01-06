@@ -42,7 +42,7 @@
             "borderless": false,
             "maximize": false,
             "hidden": false,
-            "resizable": true,
+            "resizable": false,
             "exitProcessOnClose": true,
             "injectGlobals": true
         }
@@ -63,7 +63,7 @@
             ],
             "minimumOS": "10.13.0",
             "appName": "PaperCut",
-            "appBundleName": "papercut",
+            "appBundleName": "PaperCut",
             "appIdentifier": "org.papercut.installer",
             "appIcon": "assets/icon-mac/icon.icns",
             "appCredits": "© 2026 TheHuckle, gingrspacecadet. All rights reserved."

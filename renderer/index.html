@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' ws:; script-src 'self'; style-src 'self' 'unsafe-inline';" />
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self' ws:; script-src 'self'" />
     <title>PaperCut</title>
+
+    <script src="app/polyfills.js" type="module"></script>
+
+    <!-- Xel Toolkit -->
+    <script src="vendor/xel/xel.js" type="module"></script>
+    <meta name="xel-theme" content="vendor/xel/themes/adwaita-dark.css">
+    <meta name="xel-accent-color" content="orange">
+    <meta name="xel-icons" content="vendor/xel/icons/fluent-outlined.svg">
 </head>
+
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <step-manager></step-manager>
+    </div>
     <script type="module" src="/main.js"></script>
 </body>
+
 </html>
