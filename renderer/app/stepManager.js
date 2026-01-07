@@ -3,15 +3,15 @@ import { stepImports } from "./constants.js";
 class StepManager extends HTMLElement {
     constructor() {
         super();
-        this.steps = []; 
+        this.steps = [];
         this.currentStepIndex = 0;
         this.attachShadow({ mode: 'open' });
-        this.initialized = false;
     }
 
     async connectedCallback() {
-        await this.cacheSteps();
         this.render();
+        await this.cacheSteps();
+        this.renderStep();
     }
 
     toKebabCase(str) {
@@ -26,14 +26,14 @@ class StepManager extends HTMLElement {
         const setupTasks = modules.map(async (mod, index) => {
             const ComponentClass = mod.default;
             const ComponentPath = stepImports[index];
-            
+
             const urlParts = ComponentPath.split('/');
             const fileNameWithExt = urlParts[urlParts.length - 1];
             const fileName = fileNameWithExt.split('.')[0];
 
             const tagName = this.toKebabCase(fileName);
-            
-            const cssPath = ComponentPath.replace(".js","") + ".css";
+
+            const cssPath = ComponentPath.replace(".js", "") + ".css";
             let sheet = new CSSStyleSheet();
             try {
                 const response = await fetch(cssPath);
@@ -51,32 +51,33 @@ class StepManager extends HTMLElement {
         });
 
         this.steps = await Promise.all(setupTasks);
-        this.initialized = true;
     };
 
-    async navigate(dir) {
+    navigate(dir) {
         const next = this.currentStepIndex + dir;
         if (next < 0 || next >= this.steps.length) return;
 
-        if (document.startViewTransition) {
-            document.startViewTransition(() => {
+        const container = this.shadowRoot.getElementById('step-container');
+        const currentEl = container.firstElementChild;
+
+        if (currentEl) {
+            container.classList.remove('enter-prev', 'enter-next');
+            container.classList.add(
+                'step',
+                dir > 0 ? 'exit-next' : 'exit-prev'
+            );
+
+            container.addEventListener('animationend', () => {
                 this.currentStepIndex = next;
-                this.render();
-            });
+                this.renderStep(dir);
+            }, { once: true });
         } else {
             this.currentStepIndex = next;
-            this.render();
+            this.renderStep(dir);
         };
     };
 
     render() {
-        if (!this.initialized) {
-            this.shadowRoot.innerHTML = `<div class="loading">Loading Installer...</div>`;
-            return;
-        };
-
-        const current = this.steps[this.currentStepIndex];
-
         this.shadowRoot.innerHTML = `
             <style>
                 :host {
@@ -86,12 +87,12 @@ class StepManager extends HTMLElement {
                     height: -webkit-fill-available;
                     color: color(srgb 1 1 1 / 0.8);
                     font-family: "Adwaita Sans", Inter, "Roboto Flex", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+                    overflow: clip;
                 }
 
                 .content {
                     flex: 1;
                     padding: 30px;
-                    view-transition-name: step-anim;
                     overflow: auto;
                 }
 
@@ -138,9 +139,54 @@ class StepManager extends HTMLElement {
                     justify-content: center;
                     height: 100%;
                 }
+
+                /* base */
+                .step {
+                    animation-duration: 250ms;
+                    animation-fill-mode: both;
+                }
+
+                /* OUT */
+                .step.exit-next {
+                    animation-name: fade-out, slide-out-left;
+                }
+                .step.exit-prev {
+                    animation-name: fade-out, slide-out-right;
+                }
+
+                /* IN */
+                .step.enter-next {
+                    animation-name: fade-in, slide-in-right;
+                }
+                .step.enter-prev {
+                    animation-name: fade-in, slide-in-left;
+                }
+
+                @keyframes fade-in {
+                    from { opacity: 0; }
+                }
+                @keyframes fade-out {
+                    to { opacity: 0; }
+                }
+
+                @keyframes slide-in-right {
+                    from { transform: translateX(20px); }
+                }
+                @keyframes slide-in-left {
+                    from { transform: translateX(-20px); }
+                }
+
+                @keyframes slide-out-left {
+                    to { transform: translateX(-20px); }
+                }
+                @keyframes slide-out-right {
+                    to { transform: translateX(20px); }
+                }
             </style>
 
-            <div class="content" id="step-container"></div>
+            <div class="content" id="step-container">
+                <div class="loading">Loading PaperCut..</div>
+            </div>
 
             <div class="footer">
                 <button id="prev">Back</button>
@@ -148,11 +194,26 @@ class StepManager extends HTMLElement {
             </div>
         `;
 
-        const el = document.createElement(current.tag);
-        el.shadowRoot.adoptedStyleSheets = [current.sheet];
-        this.shadowRoot.getElementById('step-container').appendChild(el);
+        this.shadowRoot.getElementById('prev').onclick = () => this.navigate(-1);
+        this.shadowRoot.getElementById('next').onclick = () => this.navigate(1);
+    };
 
-        // read step state
+    renderStep(dir = 1) {
+        const container = this.shadowRoot.getElementById('step-container');
+        container.innerHTML = ``;
+
+        const current = this.steps[this.currentStepIndex];
+        const el = document.createElement(current.tag);
+
+        el.shadowRoot.adoptedStyleSheets = [current.sheet];
+        container.appendChild(el);
+
+        el.parentElement.classList.remove('exit-prev', 'exit-next');
+        el.parentElement.classList.add(
+            'step',
+            dir > 0 ? 'enter-next' : 'enter-prev'
+        );
+
         const nextBtn = this.shadowRoot.getElementById('next');
         const prevBtn = this.shadowRoot.getElementById('prev');
 
@@ -161,9 +222,6 @@ class StepManager extends HTMLElement {
 
         nextBtn.disabled = el.nextDisabled;
         prevBtn.disabled = el.prevDisabled;
-
-        this.shadowRoot.getElementById('prev').onclick = () => this.navigate(-1);
-        this.shadowRoot.getElementById('next').onclick = () => this.navigate(1);
     };
 };
 

@@ -10,7 +10,7 @@
     "copyright": "© 2026 TheHuckle, gingrspacecadet. All rights reserved.",
 
     "defaultMode": "window",
-    "port": 3000,
+    "port": 0,
     "documentRoot": "/renderer/",
     "url": "/",
 
