@@ -76,41 +76,91 @@ class StepManager extends HTMLElement {
         };
 
         const current = this.steps[this.currentStepIndex];
-        const isLast = this.currentStepIndex === this.steps.length - 1;
 
         this.shadowRoot.innerHTML = `
             <style>
                 :host {
-                    display: flex; flex-direction: column;
-                    width: 640px; height: 440px;
-                    background: #300a24; color: white; border-radius: 8px;
-                    font-family: 'Ubuntu', system-ui, sans-serif;
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    height: -webkit-fill-available;
+                    color: color(srgb 1 1 1 / 0.8);
+                    font-family: "Adwaita Sans", Inter, "Roboto Flex", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
                 }
-                .content { flex: 1; padding: 30px; view-transition-name: step-anim; }
+
+                .content {
+                    flex: 1;
+                    padding: 30px;
+                    view-transition-name: step-anim;
+                    overflow: auto;
+                }
+
                 .footer { 
-                    display: flex; justify-content: flex-end; gap: 12px; 
-                    padding: 16px 24px; background: rgba(0,0,0,0.3); 
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 12px; 
+                    padding: 16px;
                 }
                 button { 
-                    padding: 6px 22px; border-radius: 4px; border: 1px solid #111;
-                    background: #5E2750; color: white; cursor: pointer; font-weight: 500;
+                    height: 32px;
+                    min-width: 110px;
+                    padding-bottom: 2px;
+                    padding-left: 14px;
+                    padding-right: 14px;
+                    padding-top: 2px;
+                    border-radius: 6px;
+                    border: none;
+                    background-color: color(srgb 1 1 1 / 0.12);
+                    color: color(srgb 1 1 1 / 0.8);
+                    cursor: pointer;
+                    font-weight: 700;
+                    font-size: 13px;
+                    text-align: center;
+                    text-overflow: ellipsis;
+                    text-wrap-mode: nowrap;
+                    white-space-collapse: collapse;
+                    -webkit-user-select: none;
                 }
-                button.primary { background: #E95420; border-color: #AD3E17; }
-                button:disabled { opacity: 0.3; cursor: not-allowed; }
-                .loading { display: flex; align-items: center; justify-content: center; height: 100%; }
+                button:hover {
+                    background-color: color(srgb 1 1 1 / 0.18);
+                }
+                button:active {
+                    background-color: color(srgb 1 1 1 / 0.28);
+                }
+                button:disabled {
+                    opacity: 0.3;
+                    cursor: not-allowed;
+                }
+
+                .loading {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                }
             </style>
 
             <div class="content" id="step-container"></div>
 
             <div class="footer">
-                <button id="prev" ${this.currentStepIndex === 0 ? 'disabled' : ''}>Back</button>
-                <button id="next" class="primary">${isLast ? 'Finish' : 'Next'}</button>
+                <button id="prev">Back</button>
+                <button id="next">Next</button>
             </div>
         `;
 
         const el = document.createElement(current.tag);
         el.shadowRoot.adoptedStyleSheets = [current.sheet];
         this.shadowRoot.getElementById('step-container').appendChild(el);
+
+        // read step state
+        const nextBtn = this.shadowRoot.getElementById('next');
+        const prevBtn = this.shadowRoot.getElementById('prev');
+
+        nextBtn.textContent = el.nextLabel;
+        prevBtn.textContent = el.prevLabel;
+
+        nextBtn.disabled = el.nextDisabled;
+        prevBtn.disabled = el.prevDisabled;
 
         this.shadowRoot.getElementById('prev').onclick = () => this.navigate(-1);
         this.shadowRoot.getElementById('next').onclick = () => this.navigate(1);

@@ -8,6 +8,11 @@ export class BaseStep extends HTMLElement {
         this.shadowRoot.innerHTML = this.render();
     };
 
+    get nextLabel() { return 'Next'; }
+    get prevLabel() { return 'Back'; }
+    get nextDisabled() { return false; }
+    get prevDisabled() { return false; }
+
     render() {
         return ``;
     };

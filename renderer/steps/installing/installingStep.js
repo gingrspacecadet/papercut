@@ -1,12 +1,12 @@
 import { BaseStep } from '../baseStep.js';
 
 export default class extends BaseStep {
-    get nextLabel() { return 'Continue'; }
+    get nextDisabled() { return true; }
     get prevDisabled() { return true; }
 
     render() {
         return `
-            <h1>Welcome</h1>
+            <h1>Installing... beep bop</h1>
         `;
     };
 };

@@ -8,7 +8,7 @@
         supported = true;
     } catch { }
 
-    if (supported) return; // native path
+    if (supported) return;
 
     console.warn("[CSSStyleSheet polypill] WKWebView detected");
 
