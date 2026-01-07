@@ -94,6 +94,7 @@ class StepManager extends HTMLElement {
                     flex: 1;
                     padding: 30px;
                     overflow: auto;
+                    margin: 10px;
                 }
 
                 .footer { 
@@ -181,6 +182,28 @@ class StepManager extends HTMLElement {
                 }
                 @keyframes slide-out-right {
                     to { transform: translateX(20px); }
+                }
+
+                /* width */
+                ::-webkit-scrollbar {
+                    width: 8px;
+                }
+
+                /* Track */
+                ::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+
+                /* Handle */
+                ::-webkit-scrollbar-thumb {
+                    transition: background 0.3s;
+                    background: #2f2f2fff;
+                    border-radius: 10px;
+                }
+
+                /* Handle on hover */
+                ::-webkit-scrollbar-thumb:hover {
+                    background: #555;
                 }
             </style>
 

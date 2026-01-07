@@ -1,0 +1,46 @@
+#centered {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+#logo {
+    width: 200px;
+}
+
+#version {
+    font-size: 15px;
+    font-weight: 300;
+}
+
+#description {
+    font-size: 15px;
+    font-weight: 300;
+    color: #ffffff71;
+}
+
+#prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px 0;
+    gap: 20px;
+}
+#prompt-detail {
+    width: 100px;
+}
+
+#creators {
+    margin-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.383);
+    padding-top: 10px;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 300;
+    color: #ffffffad;
+    text-align: center;
+}
+#creators a {
+    color: #e8913a;
+}
