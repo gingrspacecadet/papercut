@@ -1,7 +1,3 @@
-const steps = [
-    'welcome-step'
+export const stepImports = [
+    "../steps/welcome/welcomeStep.js",
 ];
-
-export {
-    steps
-};

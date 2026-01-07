@@ -12,50 +12,42 @@
 
     console.warn("[CSSStyleSheet polypill] WKWebView detected");
 
-    class FakeCSSStyleSheet {
+    class _CSSStyleSheet {
         constructor() {
             this._cssText = "";
-            this._styleEl = null;
-        }
+            this._elementMap = new Map();
+        };
 
         replaceSync(cssText) {
             this._cssText = cssText;
 
-            if (!this._styleEl) {
-                this._styleEl = document.createElement("style");
-                this._styleEl.setAttribute("data-polypill", "");
-                this._styleEl.textContent = cssText;
-                document.head.appendChild(this._styleEl);
-            } else {
-                this._styleEl.textContent = cssText;
+            for (const [key, value] of this._elementMap) {
+                value.textContent = cssText;
             }
-        }
+        };
 
         replace(cssText) {
             this.replaceSync(cssText);
             return Promise.resolve();
-        }
+        };
 
         get cssRules() {
-            // Best-effort cssRules emulation
-            if (!this._styleEl || !this._styleEl.sheet) return [];
+            if (!this._elementMap ||!this._elementMap.values || !this._elementMap.values[0] || !this._elementMap.values[0].sheet) return [];
 
             try {
-                return this._styleEl.sheet.cssRules || [];
+                return this._elementMap.values[0].sheet.cssRules || [];
             } catch {
-                // CSP / cross-origin safety
                 return [];
-            }
-        }
-    }
+            };
+        };
+    };
 
     Object.defineProperty(window, "CSSStyleSheet", {
         configurable: true,
         writable: true,
-        value: FakeCSSStyleSheet
+        value: _CSSStyleSheet
     });
 
-    // Patch adoptedStyleSheets so code doesn't crash
     Object.defineProperty(Document.prototype, "adoptedStyleSheets", {
         configurable: true,
         get() {
@@ -65,8 +57,21 @@
             this._adoptedStyleSheets = sheets;
 
             for (const sheet of sheets) {
-                if (sheet._styleEl && !sheet._styleEl.isConnected) {
-                    document.head.appendChild(sheet._styleEl);
+                if (!sheet._elementMap) {
+                    sheet._elementMap = new Map();
+                }
+
+                let styleEl = sheet._elementMap.get(this);
+
+                if (!styleEl) {
+                    styleEl = document.createElement("style");
+                    styleEl.setAttribute("data-polypill", "");
+                    styleEl.textContent = sheet._cssText;
+                    sheet._elementMap.set(this, styleEl);
+                }
+
+                if (!styleEl.isConnected) {
+                    this.appendChild(styleEl);
                 }
             }
         }
@@ -81,8 +86,23 @@
             this._adoptedStyleSheets = sheets;
 
             for (const sheet of sheets) {
-                if (sheet._styleEl && !sheet._styleEl.isConnected) {
-                    this.appendChild(sheet._styleEl);
+                if (!sheet._elementMap) {
+                    sheet._elementMap = new Map();
+                }
+
+                let styleEl = sheet._elementMap.get(this);
+
+                if (!styleEl) {
+                    styleEl = document.createElement("style");
+                    styleEl.setAttribute("data-polypill", "");
+                    styleEl.textContent = sheet._cssText;
+                    sheet._elementMap.set(this, styleEl);
+                }
+
+                if (!styleEl.isConnected) {
+                    requestAnimationFrame(() => {
+                        this.appendChild(styleEl);
+                    });
                 }
             }
         }

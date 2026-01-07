@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "./renderer",
+			"name": "renderer"
+		},
+		{
+			"path": "./",
+			"name": "root"
+		}
+	],
+	"settings": {}
+}
