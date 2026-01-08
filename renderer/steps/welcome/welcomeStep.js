@@ -7,7 +7,7 @@ export default class extends BaseStep {
     render() {
         return `
             <div id="centered">
-                <img id="logo" src="/assets/Logo_Light.png"/>
+                <img id="logo" src="/assets/Logo_Light.png" draggable="false"/>
                 <h3 id="version">Version 0.1.0</h3>
                 <p id="description">
                     An installer for Kindle jailbreaks, hotfixes, and other mods.
@@ -19,7 +19,7 @@ export default class extends BaseStep {
                     <a href="https://github.com/gingrspacecadet">gingrspacecadet</a>
                 </p>
                 <p id="prompt">
-                    <img id="prompt-detail" src="/assets/Kindle_Connected.png"/>
+                    <img id="prompt-detail" src="/assets/Kindle_Connected.png" draggable="false"/>
                     Connect your Kindle over USB
                 </p>
             </div>

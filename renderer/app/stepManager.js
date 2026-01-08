@@ -5,6 +5,7 @@ class StepManager extends HTMLElement {
         super();
         this.steps = [];
         this.currentStepIndex = 0;
+        this.navigating = false;
         this.attachShadow({ mode: 'open' });
     }
 
@@ -54,8 +55,12 @@ class StepManager extends HTMLElement {
     };
 
     navigate(dir) {
+        if (this.navigating == true) return;
+
         const next = this.currentStepIndex + dir;
         if (next < 0 || next >= this.steps.length) return;
+
+        this.navigating = true;
 
         const container = this.shadowRoot.getElementById('step-container');
         const currentEl = container.firstElementChild;
@@ -220,6 +225,19 @@ class StepManager extends HTMLElement {
 
         this.shadowRoot.getElementById('prev').onclick = () => this.navigate(-1);
         this.shadowRoot.getElementById('next').onclick = () => this.navigate(1);
+
+        document.addEventListener("keypress", (e) => {
+            if (e.key == "Backspace" &&
+                this.shadowRoot.getElementById('prev').disabled == false
+            ) {
+                this.navigate(-1);
+            };
+            if (e.key == "Enter" &&
+                this.shadowRoot.getElementById('next').disabled == false
+            ) {
+                this.navigate(1);
+            };
+        });
     };
 
     renderStep(dir = 1) {
@@ -246,6 +264,8 @@ class StepManager extends HTMLElement {
 
         nextBtn.disabled = el.nextDisabled;
         prevBtn.disabled = el.prevDisabled;
+
+        setTimeout(() => this.navigating = false, 100);
     };
 };
 

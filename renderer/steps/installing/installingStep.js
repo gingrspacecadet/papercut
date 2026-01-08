@@ -6,7 +6,14 @@ export default class extends BaseStep {
 
     render() {
         return `
-            <h1>Installing... beep bop</h1>
+            <div id="centered">
+                <p id="prompt">
+                    <img id="prompt-hammer" src="/assets/Hammer.png" draggable="false"/>
+                    <img id="prompt-detail" src="/assets/Kindle_Connected.png" draggable="false"/>
+                    Installing selected options...
+                </p>
+                <span class="loader"></span>
+            </div>
         `;
     };
 };

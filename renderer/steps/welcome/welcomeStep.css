@@ -1,3 +1,8 @@
+* {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
 #centered {
     display: flex;
     flex-direction: column;
@@ -12,12 +17,14 @@
 #version {
     font-size: 15px;
     font-weight: 300;
+    cursor: default;
 }
 
 #description {
     font-size: 15px;
     font-weight: 300;
     color: #ffffff71;
+    cursor: default;
 }
 
 #prompt {
@@ -26,6 +33,7 @@
     align-items: center;
     margin: 15px 0;
     gap: 20px;
+    cursor: default;
 }
 #prompt-detail {
     width: 100px;
@@ -40,6 +48,7 @@
     font-weight: 300;
     color: #ffffffad;
     text-align: center;
+    cursor: default;
 }
 #creators a {
     color: #e8913a;

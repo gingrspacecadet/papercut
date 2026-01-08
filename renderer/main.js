@@ -18,3 +18,7 @@ await Neutralino.events.on('mainMenuItemClicked', async (evt) => {
     if (evt.detail.id == "restart") await Neutralino.app.restartProcess();
     if (evt.detail.id == "quit") await Neutralino.app.exit();
 });
+
+document.addEventListener("contextmenu", function (e){
+    e.preventDefault();
+}, false);
