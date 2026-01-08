@@ -88,6 +88,7 @@ class StepManager extends HTMLElement {
                     color: color(srgb 1 1 1 / 0.8);
                     font-family: "Adwaita Sans", Inter, "Roboto Flex", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
                     overflow: clip;
+                    position: fixed;
                 }
 
                 .content {
