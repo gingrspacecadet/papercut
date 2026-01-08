@@ -17,7 +17,7 @@
     ],
     "private": true,
     "scripts": {
-        "dev": "neu run",
+        "dev": "WEBKIT_DISABLE_COMPOSITING_MODE=1 neu run",
         "build-mac": "npm i && neu update && brew install jq || sudo apt-get install jq && sh ./build-mac.sh",
         "build-linux": "npm i && neu update && brew install jq || sudo apt-get install jq && sh ./build-linux.sh",
         "build-win": "npm i && neu update && brew install jq || sudo apt-get install jq && sh ./build-win.sh",
