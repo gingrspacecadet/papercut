@@ -9,8 +9,9 @@ export default class extends BaseStep {
             <div id="centered">
                 <img id="logo" src="/assets/Logo_Light.png" draggable="false"/>
                 <div id="infobar">
-                    <a id="link" href="https://github.com/gingrspacecadet/papercut">Github</a>
+                    <a id="link" href="https://github.com/gingrspacecadet/papercut/releases">Releases</a>
                     <a id="version">Version 0.1.0</a>
+                    <a id="link" href="https://github.com/gingrspacecadet/papercut">Github</a>
                 </div>
                 <p id="description">
                     An installer for Kindle jailbreaks, hotfixes, and other mods.
