@@ -6,7 +6,7 @@ export default class extends BaseStep {
     async getOS() {
         const existingVal = store.getProp("OS");
         if (typeof existingVal == "string") return existingVal; // return cached
-        
+
         const os = await Neutralino.os.getEnv("OS");
         let osName = "Linux";
 
@@ -17,16 +17,49 @@ export default class extends BaseStep {
         return osName;
     };
 
+    parseOSXDrives(stdout) {
+        const lines = stdout
+            .trim()
+            .split("\n")
+            .filter(Boolean);
+
+        const header = lines.shift();
+
+        const headers = header
+            .replace("Mounted on", "Mounted_on")
+            .split(/\s+/)
+            .map(h => h.toLowerCase());
+
+        return lines.map(line => {
+            const parts = line.split(/\s+/);
+
+            if (parts.length > headers.length) {
+                const fixed = parts.slice(0, headers.length - 1);
+                fixed.push(parts.slice(headers.length - 1).join(" "));
+                return this.parseOSXDrives_mapRow(headers, fixed);
+            };
+
+            return this.parseOSXDrives_mapRow(headers, parts);
+        });
+    };
+
+    parseOSXDrives_mapRow(headers, values) {
+        const obj = {};
+        headers.forEach((h, i) => {
+            obj[h] = values[i];
+        });
+        return obj;
+    };
+
     async getDrives() {
         const os = await this.getOS();
-        console.log(os)
 
         let cmd;
         if (os === "Win") {
             cmd = 'wmic logicaldisk get name'; // idk if this works but it should!
         } else if (os === "OSX") {
             cmd = 'df -H';
-        } else {
+        } else { // linux
             cmd = 'lsblk -J';
         };
 
@@ -34,15 +67,25 @@ export default class extends BaseStep {
         return this.parseDrives(result.stdOut);
     };
 
-    async parseDrives(json) {
-        const data = JSON.parse(json);
+    async parseDrives(stdOut) {
         const os = await this.getOS();
 
         if (os === "Win") {
 
         } else if (os === "OSX") {
+            const data = this.parseOSXDrives(stdOut);
+            
+            const possibleDrives = data.filter((val) => val.mounted_on.startsWith("/Volumes/Kindle"));
+            if (possibleDrives.length < 1) return;
 
-        } else {
+            const mount = possibleDrives[0];
+            if (!mount.mounted_on) return;
+
+            store.set("kindle_connected", true);
+            store.set("kindle_mounted_on", mount.mounted_on);
+        } else { // linux
+            const data = JSON.parse(stdOut);
+
             const mounts = [];
             data.blockdevices.forEach(device => {
                 device.children.forEach(partition => {
