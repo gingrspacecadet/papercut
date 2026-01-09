@@ -1,13 +1,26 @@
+import * as Neutralino from "/vendor/neutralino/neutralino.mjs";
 import { BaseStep } from '../baseStep.js';
+import { store } from '../../app/store.js';
 
 export default class extends BaseStep {
     get nextDisabled() { return true; }
     get prevDisabled() { return true; }
+
+    async detectFirmware() {
+        if (!store.getProp("kindle_connected") || !store.getProp("kindle_mounted_on")) {
+            setTimeout(() => { this.requestNavigate(1); }, 100);
+        }
+        const verfile = await Neutralino.filesystem.readFile(store.getProp("kindle_mounted_on") + "/system/version.txt");
+        const version = verfile.match(/Kindle\s+([\d.]+)/)[1]
+        if (!verfile || !version) setTimeout(() => { this.requestNavigate(1) }, 100);
+        else {
+            store.set("kindle_firmware", version);
+            setTimeout(() => { this.requestNavigate(2) }, 100);
+        }
+    }
     
     render() {
-        setTimeout(() => {
-            this.requestNavigate(2);
-        }, 2000);
+        this.detectFirmware();
 
         return `
             <div id="centered">

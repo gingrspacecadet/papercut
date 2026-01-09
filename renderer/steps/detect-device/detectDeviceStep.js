@@ -60,7 +60,7 @@ export default class extends BaseStep {
         } else if (os === "OSX") {
             cmd = 'df -H';
         } else { // linux
-            cmd = 'lsblk -J';
+            cmd = 'lsblk -o NAME,VENDOR,MOUNTPOINTS -J';
         };
 
         const result = await Neutralino.os.execCommand(cmd);
@@ -87,30 +87,27 @@ export default class extends BaseStep {
             const data = JSON.parse(stdOut);
 
             const mounts = [];
+            let found = false;
+            let kdev = null;
+
             data.blockdevices.forEach(device => {
-                device.children.forEach(partition => {
-                    partition.mountpoints.forEach(mount => {
-                        if (/^\//.test(mount)) mounts.push(mount);
-                    })
-                });
+                if (device.vendor && device.vendor.toLowerCase().includes("kindle")) {
+                    device.children.forEach(part => {
+                            found = true;
+                            if (part.mountpoints.some(point => point.startsWith("/"))) {
+                                mounts.push(part.name);
+                                kdev = part.mountpoints.find(point => point.startsWith("/"));
+                            } else {
+                                // add sudo request and auto mounting here
+                                found = false;
+                            }
+                    });
+                }
             });
 
-            let found = false;
-            for (const mount of mounts) {
-                try {
-                    const stats = await Neutralino.filesystem.getStats(
-                        mount + "/system/version.txt"
-                    );
-                    console.log(stats);
-                    // found = true;
-                } catch {
-                    // file doesn't exist
-                };
-            };
-            if (found === false) {
-                // this.shadowRoot.getElementById("next").click()
-                // document.querySelector("step-manager").navigate(1);
-            };
+            store.set("kindle_connected", found);
+            store.set("kindle_mounted_on", kdev);
+            setTimeout(() => { this.requestNavigate(found ? 2 : 1); }, 100);
         };
     };
 
@@ -119,9 +116,6 @@ export default class extends BaseStep {
 
     render() {
         this.getDrives();
-        setTimeout(() => {
-            this.requestNavigate(2);
-        }, 2000);
 
         return `
             <div id="centered">
