@@ -14,6 +14,24 @@
     width: 200px;
 }
 
+#infobar {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0;
+    gap: 10px;
+}
+#infobar #link {
+    color: #e8913a;
+}
+#infobar > * {
+    border-left: 1px solid rgba(255, 255, 255, 0.383);
+    padding-left: 10px;
+}
+#infobar > *:last-child {
+    border-right: 1px solid rgba(255, 255, 255, 0.383);
+    padding-right: 10px;
+}
+
 #version {
     font-size: 15px;
     font-weight: 300;
