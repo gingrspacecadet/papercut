@@ -56,6 +56,7 @@ Built with **NeutralinoJS**, PaperCut avoids large resource intensive builds and
 <h2>Dependencies</h2>
 
 - **NeutralinoJS** - Lightweight and portable desktop application development framework.
+- [**WebKitGTK**](https://webkitgtk.org) - Needed for linux based systems.
 
 <h2>Development Installation</h2>
 
