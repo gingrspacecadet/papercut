@@ -5,7 +5,15 @@ export default class extends BaseStep {
 
     render() {
         return `
-            <h1>install options</h1>
+            <div id="centered">
+                <h1>Install Options</h1>
+                <div id="container">
+                    <a>Choose the modifications you want to install:</a>
+                    <div>
+
+                    </div>
+                </div>
+            </div>
         `;
     };
 };
