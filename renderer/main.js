@@ -19,6 +19,8 @@ await Neutralino.events.on('mainMenuItemClicked', async (evt) => {
     if (evt.detail.id == "quit") await Neutralino.app.exit();
 });
 
+// Debug Mode right click for inspect element
+// Shift + 1 to allow right click
 let isDebugOn = false;
 let debugKey = "Digit1";
 window.addEventListener("keydown", function(e) {
