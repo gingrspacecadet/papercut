@@ -1,33 +1,46 @@
-import { BaseStep } from '../baseStep.js';
-import '/app/state.js';
-
 import * as Neutralino from "/vendor/neutralino/neutralino.mjs";
+import { BaseStep } from '../baseStep.js';
+import { store } from '../../app/store.js';
 
 export default class extends BaseStep {
-    async getDrives() {
+    async getOS() {
+        const existingVal = store.getProp("OS");
+        if (typeof existingVal == "string") return existingVal; // return cached
+        
         const os = await Neutralino.os.getEnv("OS");
-        window.STATE.OS = os;   // store it globally to reduce calls
+        let osName = "Linux";
+
+        if (os && os.includes("Windows")) osName = "Win";
+        else if (navigator.userAgent.includes("Mac")) osName = "OSX";
+
+        store.set("OS", osName); // reduce calls by caching os
+        return osName;
+    };
+
+    async getDrives() {
+        const os = await this.getOS();
+        console.log(os)
 
         let cmd;
-        if (os && os.includes("Windows")) {
+        if (os === "Win") {
             cmd = 'wmic logicaldisk get name'; // idk if this works but it should!
-        } else if (navigator.userAgent.includes("Mac")) {
+        } else if (os === "OSX") {
             cmd = 'df -H';
         } else {
             cmd = 'lsblk -J';
-        }
+        };
 
         const result = await Neutralino.os.execCommand(cmd);
         return this.parseDrives(result.stdOut);
-    }
+    };
 
     async parseDrives(json) {
         const data = JSON.parse(json);
-        const os = window.STATE.OS;
+        const os = await this.getOS();
 
-        if (os && os.includes("Windows")) {
+        if (os === "Win") {
 
-        } else if (navigator.userAgent.includes("Mac")) {
+        } else if (os === "OSX") {
 
         } else {
             const mounts = [];
@@ -49,14 +62,14 @@ export default class extends BaseStep {
                     // found = true;
                 } catch {
                     // file doesn't exist
-                }
-            }
+                };
+            };
             if (found === false) {
                 // this.shadowRoot.getElementById("next").click()
                 // document.querySelector("step-manager").navigate(1);
-            }
-        }
-    }
+            };
+        };
+    };
 
     get nextDisabled() { return true; }
     get prevDisabled() { return true; }
