@@ -19,6 +19,16 @@ await Neutralino.events.on('mainMenuItemClicked', async (evt) => {
     if (evt.detail.id == "quit") await Neutralino.app.exit();
 });
 
-document.addEventListener("contextmenu", function (e){
-    e.preventDefault();
+let isDebugOn = false;
+let debugKey = "Digit1";
+window.addEventListener("keydown", function(e) {
+    if (e.shiftKey && e.code === debugKey) {
+        (async () => {
+            await Neutralino.os.showNotification('Debug Mode', 'You have enabled debug mode until you restart PaperCut', 'WARNING');
+            isDebugOn = true;
+        })();
+    };
+});
+window.addEventListener("contextmenu", function(e) {
+    if (!isDebugOn) e.preventDefault();
 }, false);

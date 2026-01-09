@@ -1,3 +1,4 @@
+import * as Neutralino from "../vendor/neutralino/neutralino.mjs";
 import { stepImports } from "./constants.js";
 
 class StepManager extends HTMLElement {
@@ -58,7 +59,8 @@ class StepManager extends HTMLElement {
         if (this.navigating == true) return;
 
         const next = this.currentStepIndex + dir;
-        if (next < 0 || next >= this.steps.length) return;
+        if (next >= this.steps.length) return Neutralino.app.exit();
+        if (next < 0) return;
 
         this.navigating = true;
 
@@ -246,6 +248,10 @@ class StepManager extends HTMLElement {
 
         const current = this.steps[this.currentStepIndex];
         const el = document.createElement(current.tag);
+
+        el.addEventListener('navigate', (e) => {
+            this.navigate(e.detail.direction);
+        });
 
         el.shadowRoot.adoptedStyleSheets = [current.sheet];
         container.appendChild(el);

@@ -5,6 +5,10 @@ export default class extends BaseStep {
     get prevDisabled() { return true; }
 
     render() {
+        setTimeout(() => {
+            this.requestNavigate(1);
+        }, 2000);
+        
         return `
             <div id="centered">
                 <p id="prompt">
