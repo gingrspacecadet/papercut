@@ -13,12 +13,10 @@ export default class extends BaseStep {
             if (!verfile || !version) setTimeout(() => { this.requestNavigate(1) }, 100);
             else {
                 store.set("kindle_firmware", version);
-                console.log(store.getProp("kindle_firmware"));
                 setTimeout(() => { this.requestNavigate(2) }, 100);
             }
         } catch {
-            // file does not exist, die!
-            // console.log("Kill yourself :3");
+            // file doesnt exist, request manual firmware
             setTimeout(() => { this.requestNavigate(1) }, 100);
         }
     }

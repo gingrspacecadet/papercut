@@ -29,7 +29,6 @@ export default class extends BaseStep {
                 this.setNextDisabled(false);
                 store.set("kindle_connected", true);
                 store.set("kindle_mounted_on", select.value)
-                console.log("Selected mountpoint ", store.getProp("kindle_mounted_on"));
             });
         }
     }
