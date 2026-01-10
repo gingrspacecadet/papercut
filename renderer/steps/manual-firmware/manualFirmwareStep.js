@@ -17,7 +17,7 @@ export default class extends BaseStep {
     async getFirmware() {
         const ver = await input({
             title: "Kindle Firmware not detected",
-            message: "Please enter your kindle's firmware version",
+            message: "Please enter your Kindle's firmware version",
             placeholder: "i.e. 5.12.2.2",
             confirmText: "OK",
             cancelText: "Cancel",
@@ -30,14 +30,18 @@ export default class extends BaseStep {
             }
         });
 
+        if (ver === null || !ver) {
+            return setTimeout(() => this.requestNavigate(-1), 200);
+        };
+
         store.set("kindle_firmware", ver);
 
         setTimeout(() => this.requestNavigate(1), 200);
     }
 
     render() {
-        this.getFirmware();
         this.setDisabled({ prev: true, next: true });
+        this.getFirmware();
 
         return `
             <h1>Manual Firmware</h1>

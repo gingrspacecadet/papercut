@@ -200,5 +200,7 @@ export function input({
 
             close(value);
         };
+
+        console.log("Input modal opened");
     });
 };

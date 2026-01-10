@@ -1,6 +1,5 @@
 import * as Neutralino from "./vendor/neutralino/neutralino.mjs";
 import "./app/stepManager.js";
-import { input } from "./app/modals.js";
 
 Neutralino.init();
 
@@ -19,6 +18,7 @@ await Neutralino.events.on('mainMenuItemClicked', async (evt) => {
     if (evt.detail.id == "restart") await Neutralino.app.restartProcess();
     if (evt.detail.id == "quit") await Neutralino.app.exit();
 });
+console.log("Set Main Menu");
 
 // Debug Mode right click for inspect element
 // Shift + 1 to allow right click
@@ -35,3 +35,4 @@ window.addEventListener("keydown", function(e) {
 window.addEventListener("contextmenu", function(e) {
     if (!isDebugOn) e.preventDefault();
 }, false);
+console.log("Listening for Debug Keybind");

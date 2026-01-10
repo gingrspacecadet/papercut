@@ -2,3 +2,8 @@
     user-select: none;
     -webkit-user-select: none;
 }
+
+h1 {
+    width: 100%;
+    text-align: center;
+}

@@ -47,12 +47,14 @@ class StepManager extends HTMLElement {
 
             if (!customElements.get(tagName)) {
                 customElements.define(tagName, ComponentClass);
+                console.log("Defined custom component", tagName, ComponentClass);
             }
 
             return { tag: tagName, sheet };
         });
 
         this.steps = await Promise.all(setupTasks);
+        console.log("Cached Step .js and .css files");
     };
 
     navigate(dir) {
@@ -63,6 +65,8 @@ class StepManager extends HTMLElement {
         if (next < 0) return;
 
         this.navigating = true;
+
+        console.log("Navigating", dir);
 
         const container = this.shadowRoot.getElementById('step-container');
         const currentEl = container.firstElementChild;
@@ -240,6 +244,8 @@ class StepManager extends HTMLElement {
                 this.navigate(1);
             };
         });
+
+        console.log("Renderer Step Container");
     };
 
     renderStep(dir = 1) {
@@ -268,6 +274,8 @@ class StepManager extends HTMLElement {
         this.syncButtons(el);
 
         setTimeout(() => this.navigating = false, 100);
+
+        console.log("Renderer Step:", current.tag);
     };
 
     syncButtons(el) {
@@ -279,6 +287,8 @@ class StepManager extends HTMLElement {
 
         nextBtn.disabled = el.nextDisabled;
         prevBtn.disabled = el.prevDisabled;
+
+        console.log("Buttons Sync:", el);
     };
 };
 
