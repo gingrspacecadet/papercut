@@ -122,7 +122,7 @@ export default class extends BaseStep {
                 <p id="prompt">
                     <img id="prompt-detail" src="/assets/Kindle_Connected.png" draggable="false"/>
                     Detecting Kindle over USB...
-                    <div id="test"><div/>
+                    <div id="test"></div>
                 </p>
                 <span class="loader"></span>
             </div>
