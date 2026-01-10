@@ -138,11 +138,15 @@ export default class extends BaseStep {
                                     }
                                 });
 
-                                const res = await Neutralino.os.execCommand(`sudo mount /dev/${part.name} $(mktemp -d)` , { stdIn: `${passwd}\n`});
+                                const mnt = await Neutralino.os.execCommand("mktemp -d").stdOut;
+                                const res = await Neutralino.os.execCommand(`sudo mount /dev/${part.name} ${mnt}` , { stdIn: `${passwd}\n`});
                                 if (res.exitCode !== 0) {
                                     found = false;
                                     return;
                                 }
+
+                                store.set("kindle_connected", true);
+                                store.set("kindle_mounted_on", mnt);
                             };
                     });
                 };
