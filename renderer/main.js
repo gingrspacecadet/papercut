@@ -1,5 +1,6 @@
 import * as Neutralino from "./vendor/neutralino/neutralino.mjs";
 import "./app/stepManager.js";
+import { input } from "./app/modals.js";
 
 Neutralino.init();
 
