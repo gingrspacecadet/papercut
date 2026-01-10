@@ -82,6 +82,10 @@ export default class extends BaseStep {
             };
 
             const result = await Neutralino.os.execCommand(cmd);
+            if (result.exitCode !== 0) {
+                throw new Error(result.stdErr);
+            };
+
             return this.parseDrives(result.stdOut);
         } catch (err) {
             console.error("Failed to fetch drives:", err);
