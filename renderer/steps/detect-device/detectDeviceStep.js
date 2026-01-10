@@ -153,7 +153,7 @@ export default class extends BaseStep {
                                 return;
                             };
 
-                            mounted_on = mnt;
+                            mounted_on = mnt.stdOut;
                         };
                     });
                 };
@@ -165,7 +165,7 @@ export default class extends BaseStep {
 
             store.set("kindle_connected", true);
             store.set("kindle_mounted_on", mounted_on);
-            this.requestNavigate(2);
+            setTimeout(() => this.requestNavigate(2), 200);
         } else {
             setTimeout(() => this.getDrives(), 2000); // retry
         };
