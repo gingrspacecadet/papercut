@@ -122,39 +122,39 @@ export default class extends BaseStep {
             data.blockdevices.forEach(device => {
                 if (device.vendor && device.vendor.toLowerCase().includes("kindle")) {
                     device.children.forEach(async part => {
-                            found = true;
-                            if (part.mountpoints.some(point => point.startsWith("/"))) {
-                                mounts.push(part.name);
-                                mounted_on = part.mountpoints.find(point => point.startsWith("/"));
-                            } else {
-                                let passwd = null;
-                                const passwdNeeded = await Neutralino.os.execCommand("sudo -n true");
-                                if (passwdNeeded.exitCode !== 0) {
-                                    passwd = await input({
-                                        title: "Password needed",
-                                        message: "Enter your password",
-                                        placeholder: "",
-                                        confirmText: "OK",
-                                        cancelText: "Cancel",
-                                        validate: async (text) => {
-                                            const result = await Neutralino.os.execCommand('sudo -v', {
-                                                stdIn: `${text}\n`
-                                            });
-                                            if (result.exitCode !== 0) return "The password is incorrect"
-                                            return;
-                                        }
-                                    });
-                                }
-
-                                const mnt = await Neutralino.os.execCommand("mktemp -d");
-                                const res = await Neutralino.os.execCommand(`sudo mount /dev/${part.name} ${mnt.stdOut}` , { stdIn: `${passwd}\n`});
-                                if (res.exitCode !== 0) {
-                                    found = false;
-                                    return;
-                                }
-
-                                mounted_on = mnt;
+                        found = true;
+                        if (part.mountpoints.some(point => point.startsWith("/"))) {
+                            mounts.push(part.name);
+                            mounted_on = part.mountpoints.find(point => point.startsWith("/"));
+                        } else {
+                            let passwd = null;
+                            const passwdNeeded = await Neutralino.os.execCommand("sudo -n true");
+                            if (passwdNeeded.exitCode !== 0) {
+                                passwd = await input({
+                                    title: "Password needed",
+                                    message: "Enter your password",
+                                    placeholder: "",
+                                    confirmText: "OK",
+                                    cancelText: "Cancel",
+                                    validate: async (text) => {
+                                        const result = await Neutralino.os.execCommand('sudo -v', {
+                                            stdIn: `${text}\n`
+                                        });
+                                        if (result.exitCode !== 0) return "The password is incorrect"
+                                        return;
+                                    }
+                                });
                             };
+
+                            const mnt = await Neutralino.os.execCommand("mktemp -d");
+                            const res = await Neutralino.os.execCommand(`sudo mount /dev/${part.name} ${mnt.stdOut}` , { stdIn: `${passwd}\n`});
+                            if (res.exitCode !== 0) {
+                                found = false;
+                                return;
+                            };
+
+                            mounted_on = mnt;
+                        };
                     });
                 };
             });
