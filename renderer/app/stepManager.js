@@ -224,8 +224,8 @@ class StepManager extends HTMLElement {
             </div>
 
             <div class="footer">
-                <button id="prev">Back</button>
-                <button id="next">Next</button>
+                <button tabindex="-1" id="prev">Back</button>
+                <button tabindex="-1" id="next">Next</button>
             </div>
         `;
 
@@ -276,6 +276,15 @@ class StepManager extends HTMLElement {
         setTimeout(() => this.navigating = false, 100);
 
         console.log("Renderer Step:", current.tag);
+
+        (async() => {
+            let status = await Neutralino.window.isVisible();
+            if (status) return;
+            setTimeout(async () => {
+                await Neutralino.window.show(); // stop white flicker
+                console.log("Window Visible");
+            }, 50);
+        })();
     };
 
     syncButtons(el) {
