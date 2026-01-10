@@ -187,11 +187,11 @@ export function input({
             if (e.key === "Enter") submit();
         });
 
-        function submit() {
+        async function submit() {
             const value = input.value;
 
             if (validate) {
-                const err = validate(value);
+                const err = await validate(value);
                 if (err) {
                     error.textContent = err;
                     return;
