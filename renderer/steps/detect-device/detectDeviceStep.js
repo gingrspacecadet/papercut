@@ -1,6 +1,7 @@
 import * as Neutralino from "/vendor/neutralino/neutralino.mjs";
 import { BaseStep } from '../baseStep.js';
 import { store } from '../../app/store.js';
+import { input } from "/app/modals.js";
 
 export default class extends BaseStep {
     constructor() {
@@ -120,14 +121,28 @@ export default class extends BaseStep {
 
             data.blockdevices.forEach(device => {
                 if (device.vendor && device.vendor.toLowerCase().includes("kindle")) {
-                    device.children.forEach(part => {
+                    device.children.forEach(async part => {
                             found = true;
                             if (part.mountpoints.some(point => point.startsWith("/"))) {
                                 mounts.push(part.name);
                                 mounted_on = part.mountpoints.find(point => point.startsWith("/"));
                             } else {
-                                // add sudo request and auto mounting here
-                                found = false;
+                                const passwd = await input({
+                                    title: "Password needed",
+                                    message: "Enter your password",
+                                    placeholder: "",
+                                    confirmText: "OK",
+                                    cancelText: "Cancel",
+                                    validate: () => {
+                                        return;
+                                    }
+                                });
+
+                                const res = await Neutralino.os.execCommand(`sudo mount /dev/${part.name} $(mktemp -d)` , { stdIn: `${passwd}\n`});
+                                if (res.exitCode !== 0) {
+                                    found = false;
+                                    return;
+                                }
                             };
                     });
                 };
