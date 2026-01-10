@@ -3,6 +3,23 @@ import { BaseStep } from '../baseStep.js';
 import { store } from '../../app/store.js';
 
 export default class extends BaseStep {
+    constructor() {
+        super();
+        this.detectionTimeout = null;
+    };
+
+    startTimeout(seconds = 6) {
+        this.detectionTimeout = setTimeout(() => {
+            this.requestNavigate(1); // manual mode
+        }, seconds * 1000);
+    };
+
+    clearTimeout() {
+        if (this.detectionTimeout) {
+            clearTimeout(this.detectionTimeout);
+        };
+    };
+
     async getOS() {
         const existingVal = store.getProp("OS");
         if (typeof existingVal == "string") return existingVal; // return cached
@@ -52,23 +69,34 @@ export default class extends BaseStep {
     };
 
     async getDrives() {
-        const os = await this.getOS();
+        try {
+            throw new Error();
+            const os = await this.getOS();
 
-        let cmd;
-        if (os === "Win") {
-            cmd = 'wmic logicaldisk get name'; // idk if this works but it should!
-        } else if (os === "OSX") {
-            cmd = 'df -H';
-        } else { // linux
-            cmd = 'lsblk -o NAME,VENDOR,MOUNTPOINTS -J';
+            let cmd;
+            if (os === "Win") {
+                cmd = 'wmic logicaldisk get name'; // idk if this works but it should!
+            } else if (os === "OSX") {
+                cmd = 'df -H';
+            } else { // linux
+                cmd = 'lsblk -o NAME,VENDOR,MOUNTPOINTS -J';
+            };
+
+            const result = await Neutralino.os.execCommand(cmd);
+            return this.parseDrives(result.stdOut);
+        } catch (err) {
+            console.error("Failed to fetch drives:", err);
+            this.clearTimeout();
+            store.set("error_message", "Failed to access system drive list");
+            setTimeout(() => this.requestNavigate(6), 200);
         };
-
-        const result = await Neutralino.os.execCommand(cmd);
-        return this.parseDrives(result.stdOut);
     };
 
     async parseDrives(stdOut) {
         const os = await this.getOS();
+
+        let found = false;
+        let mounted_on = null;
 
         if (os === "Win") {
 
@@ -76,19 +104,16 @@ export default class extends BaseStep {
             const data = this.parseOSXDrives(stdOut);
             
             const possibleDrives = data.filter((val) => val.mounted_on.startsWith("/Volumes/Kindle"));
-            if (possibleDrives.length < 1) return;
-
-            const mount = possibleDrives[0];
-            if (!mount.mounted_on) return;
-
-            store.set("kindle_connected", true);
-            store.set("kindle_mounted_on", mount.mounted_on);
+            if (possibleDrives.length < 1) {
+                const mount = possibleDrives[0];
+                if (mount.mounted_on) {
+                    found = true;
+                    mounted_on = mount.mounted_on;
+                };
+            };
         } else { // linux
             const data = JSON.parse(stdOut);
-
             const mounts = [];
-            let found = false;
-            let kdev = null;
 
             data.blockdevices.forEach(device => {
                 if (device.vendor && device.vendor.toLowerCase().includes("kindle")) {
@@ -96,25 +121,33 @@ export default class extends BaseStep {
                             found = true;
                             if (part.mountpoints.some(point => point.startsWith("/"))) {
                                 mounts.push(part.name);
-                                kdev = part.mountpoints.find(point => point.startsWith("/"));
+                                mounted_on = part.mountpoints.find(point => point.startsWith("/"));
                             } else {
                                 // add sudo request and auto mounting here
                                 found = false;
-                            }
+                            };
                     });
-                }
+                };
             });
+        };
 
-            store.set("kindle_connected", found);
-            store.set("kindle_mounted_on", kdev);
-            setTimeout(() => { this.requestNavigate(found ? 2 : 1); }, 100);
+        if (found) {
+            this.clearTimeout();
+
+            store.set("kindle_connected", true);
+            store.set("kindle_mounted_on", mounted_on);
+            this.requestNavigate(2);
+        } else {
+            setTimeout(() => this.getDrives(), 2000); // retry
         };
     };
+
 
     get nextDisabled() { return true; }
     get prevDisabled() { return true; }
 
     render() {
+        this.startTimeout();
         this.getDrives();
 
         return `
@@ -122,7 +155,6 @@ export default class extends BaseStep {
                 <p id="prompt">
                     <img id="prompt-detail" src="/assets/Kindle_Connected.png" draggable="false"/>
                     Detecting Kindle over USB...
-                    <div id="test"></div>
                 </p>
                 <span class="loader"></span>
             </div>
