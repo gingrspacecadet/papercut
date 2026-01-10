@@ -153,7 +153,7 @@ export default class extends BaseStep {
                                     return;
                                 }
 
-                                mounted_on = mnt;
+                                mounted_on = mnt.stdOut;
                             };
                     });
                 };
