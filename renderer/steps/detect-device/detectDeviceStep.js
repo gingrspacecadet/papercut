@@ -127,16 +127,24 @@ export default class extends BaseStep {
                                 mounts.push(part.name);
                                 mounted_on = part.mountpoints.find(point => point.startsWith("/"));
                             } else {
-                                const passwd = await input({
-                                    title: "Password needed",
-                                    message: "Enter your password",
-                                    placeholder: "",
-                                    confirmText: "OK",
-                                    cancelText: "Cancel",
-                                    validate: () => {
-                                        return;
-                                    }
-                                });
+                                let passwd = null;
+                                const passwdNeeded = await Neutralino.os.execCommand("sudo -n true");
+                                if (passwdNeeded.exitCode !== 0) {
+                                    passwd = await input({
+                                        title: "Password needed",
+                                        message: "Enter your password",
+                                        placeholder: "",
+                                        confirmText: "OK",
+                                        cancelText: "Cancel",
+                                        validate: async (text) => {
+                                            const result = await Neutralino.os.execCommand('sudo -v', {
+                                                stdIn: `${text}\n`
+                                            });
+                                            if (result.exitCode !== 0) return "The password is incorrect"
+                                            return;
+                                        }
+                                    });
+                                }
 
                                 const mnt = await Neutralino.os.execCommand("mktemp -d").stdOut;
                                 const res = await Neutralino.os.execCommand(`sudo mount /dev/${part.name} ${mnt}` , { stdIn: `${passwd}\n`});
@@ -145,8 +153,7 @@ export default class extends BaseStep {
                                     return;
                                 }
 
-                                store.set("kindle_connected", true);
-                                store.set("kindle_mounted_on", mnt);
+                                mounted_on = mnt;
                             };
                     });
                 };
