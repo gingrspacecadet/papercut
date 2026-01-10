@@ -106,6 +106,7 @@ class StepManager extends HTMLElement {
                     flex: 1;
                     padding: 30px;
                     overflow: auto;
+                    scroll-behavior: smooth;
                     margin: 10px;
                 }
 

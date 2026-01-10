@@ -38,10 +38,15 @@ export default class extends BaseStep {
 
         return `
             <h1>Manual Device</h1>
-            <h2>Remember to mount your kindle!</h2>
-            <select id="devices">
-                <option value="" disabled selected hidden>Select the kindle drive</option>
-            </select>
+            <div id="centered">
+                <div id="container">
+                    <p>Select the Kindle's Drive:</p>
+                    <select id="devices">
+                        <option value="" disabled selected hidden>Select a drive</option>
+                    </select>
+                    <a>Can't see your Kindle? Check if it is mounted</a>
+                </div>
+            </div>
         `;
     };
 };

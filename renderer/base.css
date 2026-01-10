@@ -1,10 +1,14 @@
 :root {
+    overscroll-behavior: none;
+    scroll-behavior: smooth;
     color: color(srgb 1 1 1 / 0.8);
     background-color: color(srgb 0.14 0.14 0.14);
     font-family: "Adwaita Sans", Inter, "Roboto Flex", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
+    overscroll-behavior: none;
+    scroll-behavior: smooth;
     margin: 0;
 }
 
