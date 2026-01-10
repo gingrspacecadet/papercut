@@ -70,7 +70,6 @@ export default class extends BaseStep {
 
     async getDrives() {
         try {
-            throw new Error();
             const os = await this.getOS();
 
             let cmd;
