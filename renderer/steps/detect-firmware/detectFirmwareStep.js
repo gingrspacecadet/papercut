@@ -18,8 +18,7 @@ export default class extends BaseStep {
     }
     
     render() {
-        this.setNextDisabled(true);
-        this.setPrevDisabled(true);
+        this.setDisabled({ prev: true, next: true });
 
         this.detectFirmware();
 

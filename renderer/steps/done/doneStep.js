@@ -4,8 +4,7 @@ import { store } from '../../app/store.js';
 
 export default class extends BaseStep {
     render() {
-        this.setNextLabel('Quit');
-        this.setPrevLabel('Back');
+        this.setLabels({ prev: "Back", next: "Quit" });
         this.setPrevDisabled(true);
 
         let successMessage = `
