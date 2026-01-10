@@ -1,6 +1,4 @@
 export const stepImports = [
-    "../steps/manual-device/manualDeviceStep.js",
-    
     "../steps/welcome/welcomeStep.js",
     "../steps/detect-device/detectDeviceStep.js",
     "../steps/manual-device/manualDeviceStep.js",
