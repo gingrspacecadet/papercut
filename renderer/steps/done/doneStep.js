@@ -69,20 +69,7 @@ export default class extends BaseStep {
                             r="72"
                             opacity="0.8"
                         ></circle>
-                        <polyline
-                            class="cross1 path"
-                            stroke="#fff"
-                            stroke-width="10"
-                            stroke-linecap="round"
-                            points="12.5,24.5 24.5,12.5 "
-                        />
-                        <polyline
-                            class="cross2 path"
-                            stroke="#fff"
-                            stroke-width="10"
-                            stroke-linecap="round"
-                            points="12.5,12.5 24.5,24.5 "
-                        />
+                        <path id="Cross" fill="#ffffff" fill-rule="evenodd" stroke="none" d="M 133.957031 145.5 L 108.00058 119.54361 L 82.043831 145.5 L 70 133.45639 L 95.956818 107.5 L 70 81.54361 L 82.043831 69.5 L 108.00058 95.45639 L 133.957031 69.5 L 146 81.54361 L 120.044403 107.5 L 146 133.45639 Z"/>
                     </g>
                 </svg>
                 Failed!
