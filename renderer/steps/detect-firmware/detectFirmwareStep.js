@@ -7,14 +7,15 @@ export default class extends BaseStep {
     get prevDisabled() { return true; }
 
     async detectFirmware() {
-        if (!store.getProp("kindle_connected") || !store.getProp("kindle_mounted_on")) {
-            setTimeout(() => { this.requestNavigate(1); }, 100);
+        if (store.getProp("kindle_connected") === false || store.getProp("kindle_mounted_on") === null) {
+            return setTimeout(() => { this.requestNavigate(1); }, 200);
         }
         const verfile = await Neutralino.filesystem.readFile(store.getProp("kindle_mounted_on") + "/system/version.txt");
         const version = verfile.match(/Kindle\s+([\d.]+)/)[1]
         if (!verfile || !version) setTimeout(() => { this.requestNavigate(1) }, 100);
         else {
             store.set("kindle_firmware", version);
+            console.log(store.getProp("kindle_firmware"));
             setTimeout(() => { this.requestNavigate(2) }, 100);
         }
     }
