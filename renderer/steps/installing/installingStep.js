@@ -1,4 +1,5 @@
 import { BaseStep } from '../baseStep.js';
+import { store } from '../../app/store.js';
 
 export default class extends BaseStep {
     render() {
@@ -7,6 +8,9 @@ export default class extends BaseStep {
         setTimeout(() => {
             this.requestNavigate(1);
         }, 2000);
+        console.log(`Firmware version ${store.getProp("kindle_firmware")}`);
+        console.log(`Mods to be installed: ${store.getProp("mods_enabled")}`);
+        console.log(`Drive to install to: ${store.getProp("kindle_mounted_on")}`);
         
         return `
             <div id="centered">

@@ -19,6 +19,7 @@ export default class extends BaseStep {
                 setTimeout(() => this.requestNavigate(2), 200);
             };
         } catch {
+            // file doesnt exist, request manual firmware
             setTimeout(() => this.requestNavigate(1), 200);
         };
     };
