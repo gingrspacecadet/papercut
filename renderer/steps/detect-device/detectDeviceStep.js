@@ -108,7 +108,7 @@ export default class extends BaseStep {
             const data = this.parseOSXDrives(stdOut);
             
             const possibleDrives = data.filter((val) => val.mounted_on.startsWith("/Volumes/Kindle"));
-            if (possibleDrives.length < 1) {
+            if (possibleDrives.length > 0) {
                 const mount = possibleDrives[0];
                 if (mount.mounted_on) {
                     found = true;

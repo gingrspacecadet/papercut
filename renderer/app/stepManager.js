@@ -266,7 +266,7 @@ class StepManager extends HTMLElement {
         );
 
         this.syncButtons(el);
-        
+
         setTimeout(() => this.navigating = false, 100);
     };
 
