@@ -11,24 +11,38 @@ export default class extends BaseStep {
     
             const select = this.shadowRoot.getElementById("devices");
             data.blockdevices.forEach(device => {
-                const option = document.createElement("option");
-                option.value = device.name;
-                option.textContent = `${device.vendor} - ${device.name}`;
-                select.appendChild(option);
+                if (!device.children) return;
+                device.children.forEach(child => {
+                    if (!child.mountpoints) return;
+                    child.mountpoints.forEach(mount => {
+                        if (!mount.startsWith("/")) return;
+                        const option = document.createElement("option");
+                        option.value = mount;
+                        option.textContent = `${device.vendor} - ${child.name}@${mount}`;
+                        select.appendChild(option);
+                    })
+                })
             });
 
             select.addEventListener("change", () => {
                 // const selected = JSON.parse(select.value);
-                console.log("Selected device ", select.value);
+                this.setNextDisabled(false);
+                store.set("kindle_connected", true);
+                store.set("kindle_mounted_on", select.value)
+                console.log("Selected mountpoint ", store.getProp("kindle_mounted_on"));
             });
         }
     }
     render() {
+        this.setNextDisabled(true);
         this.showDevices();
 
         return `
             <h1>Manual Device</h1>
-            <select id="devices"></select>
+            <h2>Remember to mount your kindle!</h2>
+            <select id="devices">
+                <option value="" disabled selected hidden>Select the kindle drive</option>
+            </select>
         `;
     };
 };
