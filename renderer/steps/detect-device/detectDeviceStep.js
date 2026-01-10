@@ -145,11 +145,10 @@ export default class extends BaseStep {
         };
     };
 
-
-    get nextDisabled() { return true; }
-    get prevDisabled() { return true; }
-
     render() {
+        this.setNextDisabled(true);
+        this.setPrevDisabled(true);
+
         this.startTimeout();
         this.getDrives();
 

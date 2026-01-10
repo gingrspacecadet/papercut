@@ -1,9 +1,9 @@
 import { BaseStep } from '../baseStep.js';
 
 export default class extends BaseStep {
-    get nextLabel() { return 'Install'; }
-
     render() {
+        this.setNextLabel('Install');
+
         return `
             <div id="centered">
                 <h1>Install Options</h1>

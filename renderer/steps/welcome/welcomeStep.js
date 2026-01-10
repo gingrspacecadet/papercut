@@ -1,10 +1,10 @@
 import { BaseStep } from '../baseStep.js';
 
 export default class extends BaseStep {
-    get nextLabel() { return 'Continue'; }
-    get prevDisabled() { return true; }
-
     render() {
+        this.setNextLabel("Continue");
+        this.setPrevDisabled(true);
+
         return `
             <div id="centered">
                 <img id="logo" src="/assets/Logo_Light.png" draggable="false"/>

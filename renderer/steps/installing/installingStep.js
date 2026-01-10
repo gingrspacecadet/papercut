@@ -1,10 +1,10 @@
 import { BaseStep } from '../baseStep.js';
 
 export default class extends BaseStep {
-    get nextDisabled() { return true; }
-    get prevDisabled() { return true; }
-
     render() {
+        this.setNextDisabled(true);
+        this.setPrevDisabled(true);
+
         setTimeout(() => {
             this.requestNavigate(1);
         }, 2000);

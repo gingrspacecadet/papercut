@@ -252,6 +252,9 @@ class StepManager extends HTMLElement {
         el.addEventListener('navigate', (e) => {
             this.navigate(e.detail.direction);
         });
+        el.addEventListener('step-update', () => {
+            this.syncButtons(el);
+        });
 
         el.shadowRoot.adoptedStyleSheets = [current.sheet];
         container.appendChild(el);
@@ -262,6 +265,12 @@ class StepManager extends HTMLElement {
             dir > 0 ? 'enter-next' : 'enter-prev'
         );
 
+        this.syncButtons(el);
+        
+        setTimeout(() => this.navigating = false, 100);
+    };
+
+    syncButtons(el) {
         const nextBtn = this.shadowRoot.getElementById('next');
         const prevBtn = this.shadowRoot.getElementById('prev');
 
@@ -270,8 +279,6 @@ class StepManager extends HTMLElement {
 
         nextBtn.disabled = el.nextDisabled;
         prevBtn.disabled = el.prevDisabled;
-
-        setTimeout(() => this.navigating = false, 100);
     };
 };
 

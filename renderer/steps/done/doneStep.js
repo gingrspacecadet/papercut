@@ -3,11 +3,11 @@ import { BaseStep } from '../baseStep.js';
 import { store } from '../../app/store.js';
 
 export default class extends BaseStep {
-    get nextLabel() { return 'Quit'; }
-    get prevLabel() { return 'Back'; }
-    get prevDisabled() { return true; }
-    
     render() {
+        this.setNextLabel('Quit');
+        this.setPrevLabel('Back');
+        this.setPrevDisabled(true);
+
         let successMessage = `
             <!-- Taken from https://github.com/rharkor/check-mark-animation/blob/main/index.html -->
             <svg

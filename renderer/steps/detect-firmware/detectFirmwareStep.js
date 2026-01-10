@@ -3,9 +3,6 @@ import { BaseStep } from '../baseStep.js';
 import { store } from '../../app/store.js';
 
 export default class extends BaseStep {
-    get nextDisabled() { return true; }
-    get prevDisabled() { return true; }
-
     async detectFirmware() {
         if (store.getProp("kindle_connected") === false || store.getProp("kindle_mounted_on") === null) {
             return setTimeout(() => { this.requestNavigate(1); }, 200);
@@ -21,6 +18,9 @@ export default class extends BaseStep {
     }
     
     render() {
+        this.setNextDisabled(true);
+        this.setPrevDisabled(true);
+
         this.detectFirmware();
 
         return `
