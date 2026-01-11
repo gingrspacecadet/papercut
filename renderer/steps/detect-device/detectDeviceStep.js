@@ -7,6 +7,21 @@ export default class extends BaseStep {
     constructor() {
         super();
         this.detectionTimeout = null;
+        this.stopped = false;
+    };
+
+    stopDetection() {
+        this.stopped = true;
+
+        if (this.detectionTimeout) {
+            clearTimeout(this.detectionTimeout);
+            this.detectionTimeout = null;
+        };
+
+        if (this.retryTimeout) {
+            clearTimeout(this.retryTimeout);
+            this.retryTimeout = null;
+        };
     };
 
     startTimeout(seconds = 6) {
@@ -19,20 +34,6 @@ export default class extends BaseStep {
         if (this.detectionTimeout) {
             clearTimeout(this.detectionTimeout);
         };
-    };
-
-    async getOS() {
-        const existingVal = store.getProp("OS");
-        if (typeof existingVal == "string") return existingVal; // return cached
-
-        const os = await Neutralino.os.getEnv("OS");
-        let osName = "Linux";
-
-        if (os && os.includes("Windows")) osName = "Win";
-        else if (navigator.userAgent.includes("Mac")) osName = "OSX";
-
-        store.set("OS", osName); // reduce calls by caching os
-        return osName;
     };
 
     parseOSXDrives(stdout) {
@@ -70,8 +71,10 @@ export default class extends BaseStep {
     };
 
     async getDrives() {
+        if (this.stopped) return;
+
         try {
-            const os = await this.getOS();
+            const os = store.getProp("os");
 
             let cmd;
             if (os === "Win") {
@@ -90,14 +93,14 @@ export default class extends BaseStep {
             return this.parseDrives(result.stdOut);
         } catch (err) {
             console.error("Failed to fetch drives:", err);
-            this.clearTimeout();
+            this.stopDetection();
             store.set("error_message", "Failed to access system drive list");
             setTimeout(() => this.requestNavigate(6), 200);
         };
     };
 
     async parseDrives(stdOut) {
-        const os = await this.getOS();
+        const os = store.getProp("os");
 
         let found = false;
         let mounted_on = null;
@@ -161,13 +164,15 @@ export default class extends BaseStep {
         };
 
         if (found) {
-            this.clearTimeout();
+            this.stopDetection();
 
             store.set("kindle_connected", true);
             store.set("kindle_mounted_on", mounted_on);
             setTimeout(() => this.requestNavigate(2), 200);
         } else {
-            setTimeout(() => this.getDrives(), 2000); // retry
+            this.retryTimeout = setTimeout(() => {
+                if (!this.stopped) this.getDrives();
+            }, 2000); // retry
         };
     };
 
@@ -175,6 +180,7 @@ export default class extends BaseStep {
         this.setDisabled({ prev: true, next: true });
 
         this.startTimeout();
+        this.pageChanged(() => this.stopDetection());
         this.getDrives();
 
         return `

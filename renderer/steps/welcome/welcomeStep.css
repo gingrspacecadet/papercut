@@ -20,7 +20,7 @@
     margin: 10px 0;
     gap: 10px;
 }
-#infobar #link {
+#infobar .link {
     color: #e8913a;
 }
 #infobar > * {

@@ -6,7 +6,7 @@
   A desktop utility for installing Kindle jailbreaks, hotfixes, and other mods.
  
   https://github.com/gingrspacecadet/papercut/
-  
+
   © 2026 TheHuckle, gingrspacecadet. All rights reserved.
  
   -------------------------------------------------------------------
@@ -30,9 +30,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self' ws:; script-src 'self'; style-src 'self' 'unsafe-inline';" />
+        content="default-src 'self' ws:; script-src 'self' 'sha256-xslcHLwR8Dqb6Dm/KLV//TiOA3gKcQwPTndUcurZTo4='; style-src 'self' 'unsafe-inline';" />
     <meta http-equiv="X-Content-Security-Policy"
-        content="default-src 'self' ws:; script-src 'self'; style-src 'self' 'unsafe-inline';" />
+        content="default-src 'self' ws:; script-src 'self' 'sha256-xslcHLwR8Dqb6Dm/KLV//TiOA3gKcQwPTndUcurZTo4='; style-src 'self' 'unsafe-inline';" />
     <title>PaperCut</title>
 
     <link rel="stylesheet" href="base.css" />
@@ -43,6 +43,32 @@
     <div id="app">
         <step-manager></step-manager>
     </div>
+    <script>
+        // credit msg
+        console.info(`%cPaperCut
+%c By %cTheHuckle%c (https://huckle.dev/) and %cgingrspacecadet%c (https://github.com/gingrspacecadet/)
+
+%c A desktop utility for installing Kindle jailbreaks, hotfixes, and other mods.
+
+%c https://github.com/gingrspacecadet/papercut/
+%c © 2026 TheHuckle, gingrspacecadet. All rights reserved.`,
+
+            "font-weight: bold; font-size: 60px; background-color: color(srgb 0.14 0.14 0.14);",
+            
+            "font-weight: thin; font-size: 15px; color: #ffffff71; background-color: color(srgb 0.14 0.14 0.14);",
+            "font-weight: thin; font-size: 15px; color: #e8913a; background-color: color(srgb 0.14 0.14 0.14);",
+            "font-weight: thin; font-size: 15px; color: #ffffff71; background-color: color(srgb 0.14 0.14 0.14);",
+            "font-weight: thin; font-size: 15px; color: #e8913a; background-color: color(srgb 0.14 0.14 0.14);",
+            "font-weight: thin; font-size: 15px; color: #ffffff71; background-color: color(srgb 0.14 0.14 0.14);",
+
+            "font-weight: thin; font-size: 15px; color: #ffffff45; background-color: color(srgb 0.14 0.14 0.14);",
+
+            "font-weight: thin; font-size: 15px; color: #e8913a; background-color: color(srgb 0.14 0.14 0.14);",
+
+            "font-weight: thin; font-size: 15px; color: #ffffff45; background-color: color(srgb 0.14 0.14 0.14);"
+        );
+        console.groupCollapsed("Debug Logs");
+    </script>
     <script type="module" src="main.js"></script>
 </body>
 

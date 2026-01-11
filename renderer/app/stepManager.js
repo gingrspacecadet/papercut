@@ -47,12 +47,14 @@ class StepManager extends HTMLElement {
 
             if (!customElements.get(tagName)) {
                 customElements.define(tagName, ComponentClass);
+                console.log("Defined custom component", tagName, ComponentClass);
             }
 
             return { tag: tagName, sheet };
         });
 
         this.steps = await Promise.all(setupTasks);
+        console.log("Cached Step .js and .css files");
     };
 
     navigate(dir) {
@@ -64,9 +66,12 @@ class StepManager extends HTMLElement {
 
         this.navigating = true;
 
+        console.log("Navigating", dir);
+
         const container = this.shadowRoot.getElementById('step-container');
         const currentEl = container.firstElementChild;
 
+        currentEl.changeCallback();
         if (currentEl) {
             container.classList.remove('enter-prev', 'enter-next');
             container.classList.add(
@@ -102,6 +107,7 @@ class StepManager extends HTMLElement {
                     flex: 1;
                     padding: 30px;
                     overflow: auto;
+                    scroll-behavior: smooth;
                     margin: 10px;
                 }
 
@@ -220,8 +226,8 @@ class StepManager extends HTMLElement {
             </div>
 
             <div class="footer">
-                <button id="prev">Back</button>
-                <button id="next">Next</button>
+                <button tabindex="-1" id="prev">Back</button>
+                <button tabindex="-1" id="next">Next</button>
             </div>
         `;
 
@@ -240,6 +246,8 @@ class StepManager extends HTMLElement {
                 this.navigate(1);
             };
         });
+
+        console.log("Renderer Step Container");
     };
 
     renderStep(dir = 1) {
@@ -268,6 +276,17 @@ class StepManager extends HTMLElement {
         this.syncButtons(el);
 
         setTimeout(() => this.navigating = false, 100);
+
+        console.log("Renderer Step:", current.tag);
+
+        (async() => {
+            let status = await Neutralino.window.isVisible();
+            if (status) return;
+            setTimeout(async () => {
+                await Neutralino.window.show(); // stop white flicker
+                console.log("Window Visible");
+            }, 50);
+        })();
     };
 
     syncButtons(el) {
@@ -279,6 +298,8 @@ class StepManager extends HTMLElement {
 
         nextBtn.disabled = el.nextDisabled;
         prevBtn.disabled = el.prevDisabled;
+
+        console.log("Buttons Sync:", el);
     };
 };
 

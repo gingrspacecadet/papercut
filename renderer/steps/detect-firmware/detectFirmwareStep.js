@@ -15,7 +15,6 @@ export default class extends BaseStep {
             if (!verfile || !version) setTimeout(() => this.requestNavigate(1), 200);
             else {
                 store.set("kindle_firmware", version);
-                console.log(store.getProp("kindle_firmware"));
                 setTimeout(() => this.requestNavigate(2), 200);
             };
         } catch {

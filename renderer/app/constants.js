@@ -8,3 +8,5 @@ export const stepImports = [
     "../steps/installing/installingStep.js",
     "../steps/done/doneStep.js",
 ];
+
+console.log("Constants Loaded");

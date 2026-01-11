@@ -7,10 +7,12 @@ export class State {
     };
 
     get() {
+        console.log("State Fetched:", this.#state);
         return this.#state;
     };
 
     getProp(key) {
+        console.log("State Prop Fetched:", key, this.#state[key]);
         return this.#state[key];
     };
 
@@ -34,12 +36,14 @@ export class State {
     };
 
     subscribe(fn) {
+        console.log("Global State Listener registered:", fn);
         this.#listeners.add(fn);
         fn(this.#state);
         return () => this.#listeners.delete(fn);
     };
 
     subscribeTo(key, fn) {
+        console.log("State Listener registered:", key, fn);
         let prev = this.#state[key];
         return this.subscribe(state => {
             if (!Object.is(prev, state[key])) {
@@ -50,6 +54,27 @@ export class State {
     };
 
     #emit() {
+        console.log("State Update:", this.#state);
         for (const fn of this.#listeners) fn(this.#state);
     };
+
+    bindToCSS({
+        target = document.documentElement,
+        prefix = "state",
+        map = null
+    } = {}) {
+        return this.subscribe(state => {
+            for (const [key, value] of Object.entries(state)) {
+                if (map && !map.includes(key)) continue;
+
+                target.dataset[`${prefix}${key[0].toUpperCase()}${key.slice(1)}`] =
+                    value ?? "";
+
+                target.style.setProperty(
+                    `--${prefix}-${key.replace(/[A-Z]/g, m => `-${m.toLowerCase()}`)}`,
+                    value ?? ""
+                );
+            }
+        });
+    }
 };

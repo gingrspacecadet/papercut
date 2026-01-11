@@ -39,9 +39,10 @@
             "fullScreen": false,
             "alwaysOnTop": false,
             "enableInspector": true,
+            "transparent": true,
             "borderless": false,
             "maximize": false,
-            "hidden": false,
+            "hidden": true,
             "resizable": false,
             "exitProcessOnClose": true,
             "injectGlobals": true
