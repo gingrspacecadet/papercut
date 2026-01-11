@@ -281,7 +281,6 @@ class StepManager extends HTMLElement {
 
         (async() => {
             let status = await Neutralino.window.isVisible();
-            console.log("PENGUIN ALERT ->", status)
             if (status) return;
             setTimeout(async () => {
                 const os = await Neutralino.os.getEnv("OS");
