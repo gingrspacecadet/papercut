@@ -283,6 +283,7 @@ class StepManager extends HTMLElement {
             let status = await Neutralino.window.isVisible();
             if (status) return;
             setTimeout(async () => {
+                await Neutralino.window.center(); // for some reason it only works one time
                 await Neutralino.window.show(); // stop white flicker
                 console.log("Window Visible");
             }, 50);
