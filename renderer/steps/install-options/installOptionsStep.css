@@ -10,3 +10,29 @@ h1 {
 p {
     cursor: default;
 }
+
+.dropdown-header {
+    cursor: pointer;
+    user-select: none;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dropdown-header::before {
+    content: "▶";
+    display: inline-block;
+    transition: transform 0.2s linear;
+    font-size: 0.9rem;
+}
+
+.dropdown-header.open::before {
+    transform: rotate(90deg);
+}
+
+.dropdown-content {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.2s linear;
+}

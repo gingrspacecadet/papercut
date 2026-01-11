@@ -10,11 +10,14 @@ export default class extends BaseStep {
         const list = this.shadowRoot.getElementById("mods");
         Object.entries(mods).forEach(([sectionName, sectionMods]) => {
             const dropdown = document.createElement("div");
+            dropdown.classList.add("dropdown-section");
 
-            // Optional: add a header for the section
             const header = document.createElement("h3");
             header.textContent = sectionName;
-            dropdown.appendChild(header);
+            header.classList.add("dropdown-header");
+
+            const content = document.createElement("div");
+            content.classList.add("dropdown-content");
 
             sectionMods.forEach(mod => {
                 const label = document.createElement("label");
@@ -28,11 +31,28 @@ export default class extends BaseStep {
                 label.appendChild(checkbox);
                 label.appendChild(document.createTextNode(mod));
                 label.appendChild(document.createElement("br"));
-                dropdown.appendChild(label);
+                content.appendChild(label);
             });
 
+            header.addEventListener("click", () => {
+                header.classList.toggle("open");
+                const isOpen = content.classList.toggle("open");
+
+                if (isOpen) {
+                    content.style.height = content.scrollHeight + "px";
+                } else {
+                    content.style.height = content.scrollHeight + "px";
+                    requestAnimationFrame(() => {
+                        content.style.height = "0px";
+                    });
+                }
+            });
+
+            dropdown.appendChild(header);
+            dropdown.appendChild(content);
             list.appendChild(dropdown);
         });
+
 
         list.addEventListener("change", () => {
             const selected = [...this.shadowRoot.querySelectorAll('#mods input:checked')].map(cb => cb.value);
@@ -49,6 +69,8 @@ export default class extends BaseStep {
         this.setNextLabel('Install');
         this.setNextDisabled(true);
         this.populateMods();
+
+        
 
         return `
             <div id="centered">

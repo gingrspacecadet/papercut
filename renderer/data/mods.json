@@ -1,13 +1,16 @@
 {
-    "popular": [
-        "Hotfix",
+    "Popular": [
         "Disable ADs",
         "PEKI",
-        "MRPI",
-        "KUAL",
         "KindleForge",
-        "KOReader",
+        "KOReader"
+    ],
+    "Dev Tools": [
         "KTerm",
         "KoSSH"
+    ],
+    "Extras": [
+        "MRPI",
+        "KUAL"
     ]
 }
