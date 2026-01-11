@@ -23,22 +23,36 @@ export default class extends BaseStep {
 
         this.getOS();
 
+        setTimeout(() => {
+            this.shadowRoot.querySelector("#infobar > .link:first-child").onclick = () =>
+                Neutralino.os.open("https://github.com/gingrspacecadet/papercut/releases");
+
+            this.shadowRoot.querySelector("#infobar > .link:last-child").onclick = () =>
+                Neutralino.os.open("https://github.com/gingrspacecadet/papercut");
+
+            this.shadowRoot.querySelector("#creators > a:first-child").onclick = () =>
+                Neutralino.os.open("https://huckle.dev/");
+
+            this.shadowRoot.querySelector("#creators > a:last-child").onclick = () =>
+                Neutralino.os.open("https://github.com/gingrspacecadet/");
+        }, 50);
+
         return `
             <div id="centered">
                 <img id="logo" src="/assets/Logo_Light.png" draggable="false"/>
                 <div id="infobar">
-                    <a id="link" href="https://github.com/gingrspacecadet/papercut/releases">Releases</a>
+                    <a class="link" href="#">Releases</a>
                     <a id="version">Version 0.1.0</a>
-                    <a id="link" href="https://github.com/gingrspacecadet/papercut">Github</a>
+                    <a class="link" href="#">Github</a>
                 </div>
                 <p id="description">
                     An installer for Kindle jailbreaks, hotfixes, and other mods.
                 </p>
                 <p id="creators">
                     Created By
-                    <a href="https://huckle.dev">TheHuckle</a>
+                    <a href="#">TheHuckle</a>
                     and
-                    <a href="https://github.com/gingrspacecadet">gingrspacecadet</a>
+                    <a href="#">gingrspacecadet</a>
                 </p>
                 <p id="prompt">
                     <img id="prompt-detail" src="/assets/Kindle_Connected.png" draggable="false"/>
