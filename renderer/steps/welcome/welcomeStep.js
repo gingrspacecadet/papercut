@@ -1,9 +1,27 @@
+import * as Neutralino from "/vendor/neutralino/neutralino.mjs";
 import { BaseStep } from '../baseStep.js';
+import { store } from '../../app/store.js';
 
 export default class extends BaseStep {
+    async getOS() {
+        const existingVal = store.getProp("os");
+        if (typeof existingVal == "string") return existingVal; // return cached
+
+        const os = await Neutralino.os.getEnv("OS");
+        let osName = "Linux";
+
+        if (os && os.includes("Windows")) osName = "Win";
+        else if (navigator.userAgent.includes("Mac")) osName = "OSX";
+
+        store.set("os", osName); // reduce calls by caching os
+        return osName;
+    };
+
     render() {
         this.setNextLabel("Continue");
         this.setPrevDisabled(true);
+
+        this.getOS();
 
         return `
             <div id="centered">

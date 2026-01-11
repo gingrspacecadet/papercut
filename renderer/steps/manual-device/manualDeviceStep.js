@@ -39,7 +39,7 @@ export default class extends BaseStep {
 
     async getDrives() {
         try {
-            const os = store.getProp("OS");
+            const os = store.getProp("os");
 
             let cmd;
             if (os === "Win") {
@@ -64,7 +64,7 @@ export default class extends BaseStep {
     };
 
     async parseDrives(stdOut) {
-        const os = store.getProp("OS");
+        const os = store.getProp("os");
         const select = this.shadowRoot.getElementById("devices");
         const previousValue = select.value;
         select.innerHTML = `<option value="" disabled selected hidden>Select a drive</option>`;

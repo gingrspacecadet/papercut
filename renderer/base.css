@@ -6,6 +6,10 @@
     font-family: "Adwaita Sans", Inter, "Roboto Flex", Roboto, "Noto Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
+[data-store-os="OSX"] {
+    background-color: #222121f6;
+}
+
 body {
     overscroll-behavior: none;
     scroll-behavior: smooth;

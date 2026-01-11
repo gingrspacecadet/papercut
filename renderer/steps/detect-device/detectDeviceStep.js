@@ -36,20 +36,6 @@ export default class extends BaseStep {
         };
     };
 
-    async getOS() {
-        const existingVal = store.getProp("OS");
-        if (typeof existingVal == "string") return existingVal; // return cached
-
-        const os = await Neutralino.os.getEnv("OS");
-        let osName = "Linux";
-
-        if (os && os.includes("Windows")) osName = "Win";
-        else if (navigator.userAgent.includes("Mac")) osName = "OSX";
-
-        store.set("OS", osName); // reduce calls by caching os
-        return osName;
-    };
-
     parseOSXDrives(stdout) {
         const lines = stdout
             .trim()
@@ -88,7 +74,7 @@ export default class extends BaseStep {
         if (this.stopped) return;
 
         try {
-            const os = await this.getOS();
+            const os = store.getProp("os");
 
             let cmd;
             if (os === "Win") {
@@ -114,7 +100,7 @@ export default class extends BaseStep {
     };
 
     async parseDrives(stdOut) {
-        const os = await this.getOS();
+        const os = store.getProp("os");
 
         let found = false;
         let mounted_on = null;

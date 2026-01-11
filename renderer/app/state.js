@@ -57,4 +57,24 @@ export class State {
         console.log("State Update:", this.#state);
         for (const fn of this.#listeners) fn(this.#state);
     };
+
+    bindToCSS({
+        target = document.documentElement,
+        prefix = "state",
+        map = null
+    } = {}) {
+        return this.subscribe(state => {
+            for (const [key, value] of Object.entries(state)) {
+                if (map && !map.includes(key)) continue;
+
+                target.dataset[`${prefix}${key[0].toUpperCase()}${key.slice(1)}`] =
+                    value ?? "";
+
+                target.style.setProperty(
+                    `--${prefix}-${key.replace(/[A-Z]/g, m => `-${m.toLowerCase()}`)}`,
+                    value ?? ""
+                );
+            }
+        });
+    }
 };
