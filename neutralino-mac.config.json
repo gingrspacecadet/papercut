@@ -39,6 +39,7 @@
             "fullScreen": false,
             "alwaysOnTop": false,
             "enableInspector": true,
+            "openInspectorOnStartup": true,
             "transparent": true,
             "borderless": false,
             "maximize": false,

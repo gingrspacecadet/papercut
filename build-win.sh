@@ -19,7 +19,7 @@ OS=$(uname -s)
 echo
 echo -e "\033[1mNeutralino BuildScript for Windows platform, version ${VERSION}\033[0m"
 
-CONF=./neutralino.config.json
+CONF=./neutralino.build.config.json
 
 if [ ! -e "./${CONF}" ]; then
     echo

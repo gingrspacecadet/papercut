@@ -284,12 +284,22 @@ class StepManager extends HTMLElement {
             if (status) return;
             setTimeout(async () => {
                 const os = await Neutralino.os.getEnv("OS");
-                if (os && os.includes("Windows")) {
-                    await Neutralino.window.setSize({ // fix windows starting size
-                        width: 1600,
-                        height: 1200,
-                        minWidth: 1600,
-                        minHeight: 1200
+                if (os?.includes("Windows")) { // fix windows scaling issues. windows is soo odd man
+                    const display = await Neutralino.screen.getPrimaryDisplay();
+
+                    const screenWidth = display.size.width;
+                    const screenHeight = display.size.height;
+
+                    const ratio = 1200 / 1600; // 4:3
+
+                    const width = Math.round(screenWidth * 0.5);
+                    const height = Math.round(width * ratio);
+
+                    await Neutralino.window.setSize({
+                        width,
+                        height,
+                        minWidth: width,
+                        minHeight: height
                     });
                 };
                 await Neutralino.window.center(); // for some reason it only works one time

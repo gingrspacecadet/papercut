@@ -1,6 +1,7 @@
 import * as Neutralino from "./vendor/neutralino/neutralino.mjs";
 import "./app/stepManager.js";
 
+window.__PC_Neutralino__ = Neutralino;
 Neutralino.init();
 
 const menu = [
