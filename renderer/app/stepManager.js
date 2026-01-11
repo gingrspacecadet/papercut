@@ -105,7 +105,7 @@ class StepManager extends HTMLElement {
 
                 .content {
                     flex: 1;
-                    padding: 30px;
+                    /*padding: 30px;*/
                     overflow: auto;
                     scroll-behavior: smooth;
                     margin: 10px;
@@ -300,7 +300,7 @@ class StepManager extends HTMLElement {
         nextBtn.disabled = el.nextDisabled;
         prevBtn.disabled = el.prevDisabled;
 
-        console.log("Buttons Sync:", el);
+        console.log("Buttons Sync:", el, el.nextLabel, el.prevLabel, el.nextDisabled, el.prevDisabled);
     };
 };
 

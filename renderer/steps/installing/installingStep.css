@@ -7,8 +7,9 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: calc(100% - 30px);
     align-items: center;
-    padding-top: 30px;
+    justify-content: center;
 }
 
 #prompt {

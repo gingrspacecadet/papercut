@@ -3,19 +3,20 @@
     -webkit-user-select: none;
 }
 
-h1 {
-    width: 100%;
-    text-align: center;
-    padding-top: 100px;
-    margin-bottom: 60px;
-    cursor: default;
-}
-
 #centered {
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: calc(100% - 30px);
     align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+    cursor: default;
 }
 
 #container {
@@ -36,27 +37,120 @@ h1 {
     color: #ffffff78;
 }
 
-#devices {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-
+/* Custom dropdown css from https://codepen.io/ibaslogic/pen/NPKdday. All credits given. */
+.custom-select {
+    position: relative;
+    display: inline-block;
     width: 100%;
-    box-sizing: border-box;
-    padding: 8px 10px;
-    border-radius: 6px;
-    border: 1px solid #333;
-    background: #1e1e1e;
-    color: white;
-    font-size: 14px;
+    max-width: 100%;
     margin-bottom: 6px;
-
-    background-repeat: no-repeat;
-    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
-    background-position: right 15px top 1em, right 10px top 1em;
-    background-size: 5px 5px, 5px 5px;
 }
-#devices:focus {
+
+.select-button {
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0.675em 1em;
+    border: 1px solid #333;
+    border-radius: 6px;
+    background-color: #1e1e1e;
+    cursor: pointer;
+    color: white;
+}
+.select-button:focus {
     outline: none;
     border-color: #e8913a;
 }
+
+.arrow {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #fff;
+    transition: transform ease-in-out 0.3s;
+}
+
+.select-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: calc(100% - 22px);
+    border: 1px solid #333;
+    border-radius: 0.25rem;
+    background-color: #1e1e1e;
+    color: white;
+    list-style: none;
+    padding: 10px;
+    margin: 10px 0 0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-height: 135px;
+    overflow-y: auto;
+    gap: 2px;
+    display: flex;
+    flex-direction: column;
+}
+
+.select-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.select-dropdown::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 25px;
+}
+
+.select-dropdown::-webkit-scrollbar-thumb {
+    background: #2f2f2fff;
+    border-radius: 10px;
+}
+
+.select-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.select-dropdown li {
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Highlight the selected option */
+.select-dropdown li.selected {
+    background-color: rgba(47, 47, 47, 0.401) !important;
+    border-radius: 4px;
+}
+
+.select-dropdown li:hover,
+.select-dropdown li:focus {
+    background-color: #2f2f2fff;
+    border-radius: 4px;
+}
+
+.select-dropdown.hidden {
+    display: none;
+}
+
+.select-button[aria-expanded="true"] .arrow {
+    transform: rotate(180deg);
+}
+
+/*=============
+Reset 
+=========================*/
+
+/** {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  color: #333;
+  display: grid;
+  place-items: center;
+}*/

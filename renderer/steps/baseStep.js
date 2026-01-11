@@ -32,26 +32,30 @@ export class BaseStep extends HTMLElement {
 
     // btn setters
     setNextDisabled(value = true) {
-        console.log("Next Btn Disable State Changed:", this._nextDisabled);
-        this._nextDisabled = Boolean(value);
+        const next = Boolean(value);
+        console.log("Next Btn Disable State Changed:", next);
+        this._nextDisabled = next;
         this._notifyUpdate();
     };
 
     setPrevDisabled(value = true) {
-        console.log("Prev Btn Disable State Changed:", this._prevDisabled);
-        this._prevDisabled = Boolean(value);
+        const next = Boolean(value);
+        console.log("Prev Btn Disable State Changed:", next);
+        this._prevDisabled = next;
         this._notifyUpdate();
     };
 
     setNextLabel(text) {
-        console.log("Next Btn Label State Changed:", this._nextLabel);
-        this._nextLabel = text;
+        const next = text;
+        console.log("Next Btn Label State Changed:", next);
+        this._nextLabel = next;
         this._notifyUpdate();
     };
 
     setPrevLabel(text) {
-        console.log("Prev Btn Label State Changed:", this._prevLabel);
-        this._prevLabel = text;
+        const next = text;
+        console.log("Prev Btn Label State Changed:", next);
+        this._prevLabel = next;
         this._notifyUpdate();
     };
 
@@ -75,7 +79,7 @@ export class BaseStep extends HTMLElement {
     };
 
     _notifyUpdate() {
-        console.log("Re-rendering buttons");
+        console.log("Re-rendering buttons", this._nextLabel, this._prevLabel, this._nextDisabled, this._prevDisabled);
         this.dispatchEvent(new CustomEvent('step-update', {
             bubbles: true,
             composed: true

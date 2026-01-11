@@ -168,6 +168,7 @@ export default class extends BaseStep {
 
             store.set("kindle_connected", true);
             store.set("kindle_mounted_on", mounted_on);
+            store.set("kindle_firmware", null);
             setTimeout(() => this.requestNavigate(2), 200);
         } else {
             this.retryTimeout = setTimeout(() => {

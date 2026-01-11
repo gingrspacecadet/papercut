@@ -6,8 +6,9 @@
 #centered {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: -webkit-fill-available;
     align-items: center;
+    padding: 30px;
 }
 
 #logo {
