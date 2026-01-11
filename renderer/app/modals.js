@@ -66,12 +66,14 @@ export function input({
                 margin: 0 0 8px;
                 font-size: 18px;
                 font-weight: 400;
+                cursor: default;
             }
 
             .input-modal p {
                 margin: 0 0 14px;
                 opacity: .85;
                 font-weight: 300;
+                cursor: default;
             }
 
             .input-modal input {
@@ -96,6 +98,7 @@ export function input({
                 font-size: 12px;
                 color: #ff6b6b;
                 margin-bottom: 10px;
+                cursor: default;
             }
 
             .input-modal .actions {
