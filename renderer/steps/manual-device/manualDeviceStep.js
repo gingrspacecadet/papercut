@@ -135,7 +135,7 @@ export default class extends BaseStep {
 
             let cmd;
             if (os === "Win") {
-                cmd = 'wmic logicaldisk get name'; // idk if this works but it should!
+                cmd = 'wmic logicaldisk where "DriveType=2" get DeviceID,VolumeName';
             } else if (os === "OSX") {
                 cmd = 'system_profiler SPStorageDataType -json';
             } else { // linux
@@ -162,7 +162,28 @@ export default class extends BaseStep {
         select.innerHTML = ``;
 
         if (os === "Win") {
+            const lines = stdOut
+                .split(/\r?\n/)
+                .map(l => l.trim())
+                .filter(Boolean);
 
+            lines.shift(); // remove headers
+
+            lines.forEach(line => {
+                const [device, volume] = line.split(/\s{2,}/);
+
+                if (!device) return;
+
+                const option = document.createElement("li");
+                option.role = "option";
+                option.dataset.value = `${device}\\`;
+
+                option.textContent = volume
+                    ? `${volume} @ ${device}\\`
+                    : `Removable Drive @ ${device}\\`;
+
+                select.appendChild(option);
+            });
         } else if (os === "OSX") {
             const data = JSON.parse(stdOut);
 

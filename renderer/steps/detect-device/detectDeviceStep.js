@@ -78,7 +78,7 @@ export default class extends BaseStep {
 
             let cmd;
             if (os === "Win") {
-                cmd = 'wmic logicaldisk get name'; // idk if this works but it should!
+                cmd = 'wmic logicaldisk where "DriveType=2" get DeviceID,VolumeName';
             } else if (os === "OSX") {
                 cmd = 'df -H';
             } else { // linux
@@ -106,7 +106,22 @@ export default class extends BaseStep {
         let mounted_on = null;
 
         if (os === "Win") {
+            const lines = stdOut
+                .split(/\r?\n/)
+                .map(l => l.trim())
+                .filter(Boolean);
 
+            lines.shift(); // remove headers
+
+            for (const line of lines) {
+                const [device, volume] = line.split(/\s{2,}/);
+
+                if (volume && volume.toLowerCase().includes("kindle")) {
+                    found = true;
+                    mounted_on = `${device}\\`;
+                    break;
+                }
+            }
         } else if (os === "OSX") {
             const data = this.parseOSXDrives(stdOut);
             
