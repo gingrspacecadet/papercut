@@ -281,14 +281,17 @@ class StepManager extends HTMLElement {
 
         (async() => {
             let status = await Neutralino.window.isVisible();
+            console.log("PENGUIN ALERT ->", status)
             if (status) return;
             setTimeout(async () => {
                 const os = await Neutralino.os.getEnv("OS");
                 if (os?.includes("Windows")) { // fix windows scaling issues. windows is soo odd man
-                    const display = await Neutralino.screen.getPrimaryDisplay();
+                    const displays = await Neutralino.computer.getDisplays();
+                    if (displays.length < 1) return; // u dont need this bud!
+                    const display = displays[0];
 
-                    const screenWidth = display.size.width;
-                    const screenHeight = display.size.height;
+                    const screenWidth = display.resolution.width;
+                    const screenHeight = display.resolution.height;
 
                     const ratio = 1200 / 1600; // 4:3
 
