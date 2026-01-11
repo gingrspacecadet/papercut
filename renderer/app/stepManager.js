@@ -287,9 +287,9 @@ class StepManager extends HTMLElement {
                 if (os && os.includes("Windows")) {
                     await Neutralino.window.setSize({ // fix windows starting size
                         width: 1600,
-                        height: 1300,
+                        height: 1200,
                         minWidth: 1600,
-                        minHeight: 1300
+                        minHeight: 1200
                     });
                 };
                 await Neutralino.window.center(); // for some reason it only works one time

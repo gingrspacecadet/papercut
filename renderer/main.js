@@ -13,12 +13,17 @@ const menu = [
     }
 ];
 
-await Neutralino.window.setMainMenu(menu);
-await Neutralino.events.on('mainMenuItemClicked', async (evt) => {
-    if (evt.detail.id == "restart") await Neutralino.app.restartProcess();
-    if (evt.detail.id == "quit") await Neutralino.app.exit();
-});
-console.log("Set Main Menu");
+(async() => {
+    const os = await Neutralino.os.getEnv("OS");
+    if (os && os.includes("Windows")) return;
+
+    await Neutralino.window.setMainMenu(menu);
+    await Neutralino.events.on('mainMenuItemClicked', async (evt) => {
+        if (evt.detail.id == "restart") await Neutralino.app.restartProcess();
+        if (evt.detail.id == "quit") await Neutralino.app.exit();
+    });
+    console.log("Set Main Menu");
+})();
 
 // Debug Mode right click for inspect element
 // Shift + 1 to allow right click
