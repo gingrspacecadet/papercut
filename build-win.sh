@@ -97,13 +97,13 @@ for APP_ARCH in "${APP_ARCH_LIST[@]}"; do
         cp ${APP_SRC}/* "${APP_DST}/"
         set -f
 
-        if [ "$OS" == "Darwin" ]; then
-          sed -i '' "s/{APP_NAME}/${APP_NAME}/g" "${APP_DST}/install-icon.cmd"
-          sed -i '' "s/{APP_ICON}/${APP_ICON}/g" "${APP_DST}/install-icon.cmd"
-        else
-          sed -i "s/{APP_NAME}/${APP_NAME}/g" "${APP_DST}/install-icon.cmd"
-          sed -i "s/{APP_ICON}/${APP_ICON}/g" "${APP_DST}/install-icon.cmd"
-        fi
+        #if [ "$OS" == "Darwin" ]; then
+        #  sed -i '' "s/{APP_NAME}/${APP_NAME}/g" "${APP_DST}/install-icon.cmd"
+        #  sed -i '' "s/{APP_ICON}/${APP_ICON}/g" "${APP_DST}/install-icon.cmd"
+        #else
+        #  sed -i "s/{APP_NAME}/${APP_NAME}/g" "${APP_DST}/install-icon.cmd"
+        #  sed -i "s/{APP_ICON}/${APP_ICON}/g" "${APP_DST}/install-icon.cmd"
+        #fi
     fi
 
     echo "  Copying content:"
@@ -119,7 +119,7 @@ for APP_ARCH in "${APP_ARCH_LIST[@]}"; do
 
     if [ -e "./${APP_ICON}" ]; then
         echo "    - Icon"
-        cp -r "${APP_ICON}" "${APP_DST}/"
+        #cp -r "${APP_ICON}" "${APP_DST}/"
     fi
 
     if [ -e "./postproc-win.sh" ]; then
