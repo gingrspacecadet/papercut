@@ -7,6 +7,7 @@ export class BaseStep extends HTMLElement {
         this._prevLabel = 'Back';
         this._nextDisabled = false;
         this._prevDisabled = false;
+        this._changeCallback = () => {};
     };
 
     connectedCallback() {
@@ -27,6 +28,7 @@ export class BaseStep extends HTMLElement {
     get prevLabel() { return this._prevLabel; };
     get nextDisabled() { return this._nextDisabled; };
     get prevDisabled() { return this._prevDisabled; };
+    get changeCallback() { return this._changeCallback; };
 
     // btn setters
     setNextDisabled(value = true) {
@@ -65,6 +67,11 @@ export class BaseStep extends HTMLElement {
         if (next !== undefined) this._nextDisabled = next;
         if (prev !== undefined) this._prevDisabled = prev;
         this._notifyUpdate();
+    };
+
+    pageChanged(callback) {
+        console.log("Page changed callback:", callback);
+        this._changeCallback = callback;
     };
 
     _notifyUpdate() {

@@ -71,6 +71,7 @@ class StepManager extends HTMLElement {
         const container = this.shadowRoot.getElementById('step-container');
         const currentEl = container.firstElementChild;
 
+        currentEl.changeCallback();
         if (currentEl) {
             container.classList.remove('enter-prev', 'enter-next');
             container.classList.add(

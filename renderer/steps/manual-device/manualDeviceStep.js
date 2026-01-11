@@ -125,7 +125,10 @@ export default class extends BaseStep {
 
         setTimeout(() => {
             this.registerListener();
-            setInterval(() => this.getDrives(), 2000);
+
+            const intervalId = setInterval(() => this.getDrives(), 2000);
+            this.pageChanged(() => clearInterval(intervalId));
+            
             this.getDrives();
         }, 50);
 
