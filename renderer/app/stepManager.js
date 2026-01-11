@@ -283,6 +283,15 @@ class StepManager extends HTMLElement {
             let status = await Neutralino.window.isVisible();
             if (status) return;
             setTimeout(async () => {
+                const os = await Neutralino.os.getEnv("OS");
+                if (os && os.includes("Windows")) {
+                    await Neutralino.window.setSize({ // fix windows starting size
+                        width: 1600,
+                        height: 1300,
+                        minWidth: 1600,
+                        minHeight: 1300
+                    });
+                };
                 await Neutralino.window.center(); // for some reason it only works one time
                 await Neutralino.window.show(); // stop white flicker
                 console.log("Window Visible");

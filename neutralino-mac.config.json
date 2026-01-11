@@ -39,7 +39,7 @@
             "fullScreen": false,
             "alwaysOnTop": false,
             "enableInspector": true,
-            "transparent": false,
+            "transparent": true,
             "borderless": false,
             "maximize": false,
             "hidden": true,

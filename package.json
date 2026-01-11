@@ -18,6 +18,7 @@
     "private": true,
     "scripts": {
         "dev": "WEBKIT_DISABLE_COMPOSITING_MODE=1 neu run",
+        "dev-mac": "WEBKIT_DISABLE_COMPOSITING_MODE=1 neu run -- --config-file=neutralino-mac.config.json",
         "build-mac": "npm i && neu update && brew install jq || sudo apt-get install jq && sh ./build-mac.sh",
         "build-linux": "npm i && neu update && brew install jq || sudo apt-get install jq && sh ./build-linux.sh",
         "build-win": "npm i && neu update && brew install jq || sudo apt-get install jq && sh ./build-win.sh",
