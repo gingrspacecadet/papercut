@@ -3,40 +3,6 @@ import { BaseStep } from '../baseStep.js';
 import { store } from '../../app/store.js';
 
 export default class extends BaseStep {
-    parseOSXDrives(stdout) {
-        const lines = stdout
-            .trim()
-            .split("\n")
-            .filter(Boolean);
-
-        const header = lines.shift();
-
-        const headers = header
-            .replace("Mounted on", "Mounted_on")
-            .split(/\s+/)
-            .map(h => h.toLowerCase());
-
-        return lines.map(line => {
-            const parts = line.split(/\s+/);
-
-            if (parts.length > headers.length) {
-                const fixed = parts.slice(0, headers.length - 1);
-                fixed.push(parts.slice(headers.length - 1).join(" "));
-                return this.parseOSXDrives_mapRow(headers, fixed);
-            };
-
-            return this.parseOSXDrives_mapRow(headers, parts);
-        });
-    };
-
-    parseOSXDrives_mapRow(headers, values) {
-        const obj = {};
-        headers.forEach((h, i) => {
-            obj[h] = values[i];
-        });
-        return obj;
-    };
-
     async getDrives() {
         try {
             const os = store.getProp("os");
@@ -45,7 +11,7 @@ export default class extends BaseStep {
             if (os === "Win") {
                 cmd = 'wmic logicaldisk get name'; // idk if this works but it should!
             } else if (os === "OSX") {
-                cmd = 'df -H';
+                cmd = 'system_profiler SPStorageDataType -json';
             } else { // linux
                 cmd = 'lsblk -o NAME,VENDOR,MOUNTPOINTS -J';
             };
@@ -66,15 +32,29 @@ export default class extends BaseStep {
     async parseDrives(stdOut) {
         const os = store.getProp("os");
         const select = this.shadowRoot.getElementById("devices");
+
         const previousValue = select.value;
         select.innerHTML = `<option value="" disabled selected hidden>Select a drive</option>`;
 
         if (os === "Win") {
 
         } else if (os === "OSX") {
-            const data = this.parseOSXDrives(stdOut);
+            const data = JSON.parse(stdOut);
+
+            if (data.SPStorageDataType && data.SPStorageDataType.length > 0) {
+                const allDrives = data.SPStorageDataType;
+                const possibleDrives = allDrives.filter((val) => val._name && val.bsd_name && val.mount_point && val.mount_point.startsWith("/") && val.writable === "yes");
+                if (possibleDrives.length > 0) {
+                    possibleDrives.forEach(mount => {
+                        const option = document.createElement("option");
+                        option.value = mount.mount_point;
+                        option.textContent = `${mount._name} - ${mount.bsd_name}@${mount.mount_point}`;
+                        select.appendChild(option);
+                    });
+                };
+            };
             
-            const possibleDrives = data.filter((val) => val.mounted_on.startsWith("/"));
+            /*const possibleDrives = data.filter((val) => val.mounted_on.startsWith("/"));
             if (possibleDrives.length > 0) {
                 possibleDrives.forEach(mount => {
                     if (mount.mounted_on) {
@@ -85,7 +65,7 @@ export default class extends BaseStep {
                         select.appendChild(option);
                     };
                 });
-            };
+            };*/
         } else { // linux
             const data = JSON.parse(stdOut);
         
