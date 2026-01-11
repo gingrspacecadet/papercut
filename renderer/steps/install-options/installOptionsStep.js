@@ -5,7 +5,9 @@ import { store } from '../../app/store.js';
 export default class extends BaseStep {
     async populateMods() {
         const data = await Neutralino.resources.readFile("/renderer/data/mods.json");
+        const jailbreaks = await Neutralino.resources.readFile("/renderer/data/jailbreaks.json");
         const mods = JSON.parse(data);
+        // TODO: add jailbreaks list under separate catagory
 
         const list = this.shadowRoot.getElementById("mods");
         Object.entries(mods).forEach(([sectionName, sectionMods]) => {
