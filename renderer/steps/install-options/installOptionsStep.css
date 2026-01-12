@@ -98,6 +98,9 @@ p {
     gap: 0.5rem;
     padding: 2px 0;
 }
+.dropdown-content label.disabled {
+    color: #ffffff4d;
+}
 .dropdown-content input[type="checkbox"] {
     -webkit-appearance: none;
     -moz-appearance: none;

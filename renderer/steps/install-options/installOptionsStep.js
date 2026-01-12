@@ -20,6 +20,7 @@ export default class extends BaseStep {
         const jailbreaks = await Neutralino.resources.readFile("/renderer/data/jailbreaks.json");
         const jbs = JSON.parse(jailbreaks);
 
+        let jailbreakFound = false;
         (() => {
             const dropdown = document.createElement("div");
             dropdown.classList.add("dropdown-section");
@@ -31,6 +32,7 @@ export default class extends BaseStep {
             const content = document.createElement("div");
             content.classList.add("dropdown-content");
 
+            let checkedBest = false;
             jbs.forEach(({ min, max, jailbreak }) => {
                 const label = document.createElement("label");
                 label.classList.add("checkbox-item");
@@ -42,10 +44,18 @@ export default class extends BaseStep {
 
                 const isSupported = this.validateVersion(firmware, min, max);
 
-                if (!isSupported) checkbox.disabled = true;
+                if (!isSupported) {
+                    checkbox.disabled = true;
+                    label.classList.add("disabled");
+                };
+                if (!checkedBest && isSupported) {
+                    checkbox.checked = true;
+                    checkedBest = true;
+                    jailbreakFound = true;
+                };
 
                 label.appendChild(checkbox);
-                label.appendChild(document.createTextNode(mod));
+                label.appendChild(document.createTextNode(jailbreak));
                 label.appendChild(document.createElement("br"));
                 content.appendChild(label);
             });
@@ -69,6 +79,13 @@ export default class extends BaseStep {
             list.appendChild(dropdown);
         })();
 
+        if (jailbreakFound) {
+            this.setNextDisabled(false);
+        } else {
+            store.set("error_message", "No jailbreaks support your device");
+            setTimeout(() => this.requestNavigate(2), 200);
+        };
+
         const data = await Neutralino.resources.readFile("/renderer/data/mods.json");
         const mods = JSON.parse(data);
 
@@ -91,6 +108,7 @@ export default class extends BaseStep {
                 checkbox.type = "checkbox";
                 checkbox.name = "mods[]";
                 checkbox.value = mod;
+                checkbox.setAttribute('data-type', 'mod');
 
                 label.appendChild(checkbox);
                 label.appendChild(document.createTextNode(mod));
@@ -119,7 +137,7 @@ export default class extends BaseStep {
 
 
         list.addEventListener("change", () => {
-            const selected = [...this.shadowRoot.querySelectorAll('#mods input:checked')].map(cb => cb.value);
+            const selected = [...this.shadowRoot.querySelectorAll('#mods input[data-type="mod"]:checked')].map(cb => cb.value);
             store.set("mods_enabled", selected);
             if (selected.length === 0) {
                 this.setNextDisabled(true);
@@ -132,9 +150,7 @@ export default class extends BaseStep {
     render() {
         this.setNextLabel('Install');
         this.setNextDisabled(true);
-        this.populateMods();
-
-
+        setTimeout(() => this.populateMods(), 50);
 
         return `
             <div id="centered">
