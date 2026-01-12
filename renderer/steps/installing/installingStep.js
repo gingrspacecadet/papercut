@@ -9,6 +9,7 @@ export default class extends BaseStep {
             this.requestNavigate(1);
         }, 2000);
         console.log(`Firmware version ${store.getProp("kindle_firmware")}`);
+        console.log(`Jailbreak to use: ${store.getProp("jailbreak_selected")}`);
         console.log(`Mods to be installed: ${store.getProp("mods_enabled")}`);
         console.log(`Drive to install to: ${store.getProp("kindle_mounted_on")}`);
         

@@ -101,7 +101,7 @@ p {
 .dropdown-content label.disabled {
     color: #ffffff4d;
 }
-.dropdown-content input[type="checkbox"] {
+.dropdown-content input[type="checkbox"], .dropdown-content input[type="radio"] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -112,7 +112,7 @@ p {
     border-radius: 0.25rem;
     background-color: #232323;/*1e1e1e*/
 }
-.dropdown-content input[type="checkbox"]:checked {
+.dropdown-content input[type="checkbox"]:checked, .dropdown-content input[type="radio"]:checked {
     border: 1px solid #efad6b;
     background-color: #e8913a;
     background-repeat: no-repeat;

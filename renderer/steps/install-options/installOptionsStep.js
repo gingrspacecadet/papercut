@@ -37,24 +37,26 @@ export default class extends BaseStep {
                 const label = document.createElement("label");
                 label.classList.add("checkbox-item");
 
-                const checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.name = "mods[]";
-                checkbox.value = jailbreak;
+                const radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = "jailbreak_group";
+                radio.value = jailbreak;
+                radio.setAttribute('data-type', 'jailbreak');
 
                 const isSupported = this.validateVersion(firmware, min, max);
 
                 if (!isSupported) {
-                    checkbox.disabled = true;
+                    radio.disabled = true;
                     label.classList.add("disabled");
                 };
                 if (!checkedBest && isSupported) {
-                    checkbox.checked = true;
+                    store.set("jailbreak_selected", jailbreak);
+                    radio.checked = true;
                     checkedBest = true;
                     jailbreakFound = true;
                 };
 
-                label.appendChild(checkbox);
+                label.appendChild(radio);
                 label.appendChild(document.createTextNode(jailbreak));
                 label.appendChild(document.createElement("br"));
                 content.appendChild(label);
@@ -80,7 +82,7 @@ export default class extends BaseStep {
         })();
 
         if (jailbreakFound) {
-            this.setNextDisabled(false);
+            //this.setNextDisabled(false);
         } else {
             store.set("error_message", "No jailbreaks support your device");
             setTimeout(() => this.requestNavigate(2), 200);
@@ -136,20 +138,30 @@ export default class extends BaseStep {
         });
 
 
-        list.addEventListener("change", () => {
-            const selected = [...this.shadowRoot.querySelectorAll('#mods input[data-type="mod"]:checked')].map(cb => cb.value);
-            store.set("mods_enabled", selected);
-            if (selected.length === 0) {
+        list.addEventListener("change", (e) => {
+            const target = e.target;
+
+            if (target.getAttribute('data-type') === 'jailbreak') {
+                store.set("jailbreak_selected", target.value);
+            };
+
+            const selectedMods = [...this.shadowRoot.querySelectorAll('#mods input[data-type="mod"]:checked')].map(cb => cb.value);
+            store.set("mods_enabled", selectedMods);
+            
+            if (selectedMods.length === 0) {
                 this.setNextDisabled(true);
             } else {
                 this.setNextDisabled(false);
-            }
+            };
         });
-    }
+    };
 
     render() {
         this.setNextLabel('Install');
         this.setNextDisabled(true);
+
+        store.set("jailbreak_selected", null);
+        store.set("mods_enabled", []);
         setTimeout(() => this.populateMods(), 50);
 
         return `
