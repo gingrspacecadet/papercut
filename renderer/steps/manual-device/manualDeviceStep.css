@@ -63,6 +63,11 @@ h1 {
     outline: none;
     border-color: #e8913a;
 }
+.select-button span {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 
 .arrow {
     border-left: 5px solid transparent;
